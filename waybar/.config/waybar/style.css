@@ -1,0 +1,160 @@
+/* https://github.com/Alexays/Waybar/wiki */
+@import "mocha.css";
+
+* {
+    font-family: "MesloLGS Nerd Font Mono Bold";
+    font-size: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+/* Fully transparent bar — the two module groups become the visible "islands" */
+window#waybar {
+    background: transparent;
+    color: @text;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+tooltip {
+    background-color: alpha(@base, 0.92);
+    border: 1px solid @surface1;
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @text;
+    padding: 4px;
+}
+
+/* ---- The two frosted islands (left group + right group) ---- */
+.modules-left,
+.modules-right {
+    background-color: alpha(@base, 0.7);
+    border-radius: 14px;
+    padding: 0 6px;
+    margin: 0;
+}
+
+/* Modules sit transparently inside their island */
+#custom-archlogo,
+#workspaces,
+#tray,
+#cpu,
+#memory,
+#pulseaudio,
+#backlight,
+#bluetooth,
+#network,
+#battery,
+#clock {
+    background-color: transparent;
+    /* bottom-heavy padding recenters content: large icon ascent pushes the
+       baseline down, so give the freed top space back as bottom padding */
+    padding: 2px 8px 2px;
+    margin: 0;
+}
+
+/* Subtle hover highlight for clickable status modules */
+#custom-archlogo:hover,
+#cpu:hover,
+#memory:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#bluetooth:hover,
+#network:hover,
+#battery:hover,
+#clock:hover {
+    background-color: alpha(@surface0, 0.7);
+    border-radius: 10px;
+}
+
+/* ---------------- Left island ---------------- */
+#custom-archlogo {
+    color: @blue;
+    font-size: 15px;
+    padding: 0 12px 0 10px;
+}
+
+#workspaces {
+    padding: 2px 2px;
+}
+
+#workspaces button {
+    padding: 0 7px;
+    margin: 2px 1px;
+    color: @overlay0;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background: alpha(@surface0, 0.8);
+    color: @mauve;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#workspaces button.active {
+    background-color: @surface1;
+    color: @mauve;
+}
+
+#workspaces button.focused {
+    background-color: @surface1;
+    color: @rosewater;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+    color: @crust;
+}
+
+/* ---------------- Right island ---------------- */
+#tray {
+    padding: 2px 6px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+#cpu                 { color: @peach; }
+#memory              { color: @lavender; }
+#pulseaudio          { color: @blue; }
+#backlight           { color: @yellow; }
+#bluetooth           { color: @sapphire; }
+#network             { color: @green; }
+#battery             { color: @green; }
+#clock               { color: @maroon; }
+#clock.time          { padding-right: 10px; }
+
+#battery.warning  { color: @yellow; }
+#battery.critical { color: @red; }
+#battery.charging { color: @green; }
+
+@keyframes blink {
+    to {
+        background-color: @red;
+        color: @crust;
+        border-radius: 10px;
+    }
+}
+
+#battery.critical:not(.charging) {
+    animation-name: blink;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

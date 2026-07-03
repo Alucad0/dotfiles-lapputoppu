@@ -1,0 +1,18 @@
+# pacman -S --needed - < packages.txt
+hyprland
+hyprpaper
+waybar
+kitty
+wofi
+zsh
+git
+github-cli
+grim
+slurp
+python-gobject
+gtk-layer-shell
+python-pillow
+pavucontrol
+blueman
+brightnessctl
+otf-codenewroman-nerd

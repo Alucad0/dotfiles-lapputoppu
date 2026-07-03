@@ -1,0 +1,110 @@
+// https://github.com/Alexays/Waybar/wiki
+{
+    //"layer": "top",
+    "position": "top",
+    "reload_style_on_change": true,
+    "spacing": 2,
+    "margin-top": 6,
+    "margin-left": 8,
+    "margin-right": 8,
+    "modules-left": ["custom/archlogo", "hyprland/workspaces"],
+    "modules-center": [],
+    "modules-right": ["tray", "cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    "custom/archlogo": {
+        "format": "󰣇",
+        "tooltip": false,
+        "on-click": "wofi --show drun"
+    },
+    "tray": {
+        "spacing": 6
+    },
+    "cpu": {
+        "format": "<span size='12000' rise='-2000'></span> {usage}%",
+        "interval": 2,
+        "tooltip": true,
+        // Toggles the per-core bar chart dropdown under the bar
+        "on-click": "python3 /home/Alucado/.config/waybar/scripts/cpu-cores-dropdown.py"
+    },
+    "memory": {
+        "format": "<span size='12000' rise='-2000'></span> {percentage}%",
+        "interval": 2,
+        "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB used\nSwap: {swapUsed:0.1f} / {swapTotal:0.1f} GiB"
+    },
+    "hyprland/window": {
+        "max-length": 60 // Cutoff for window title text
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "<span size='12000' rise='-2000'></span> ",
+        "format-icons": {
+            "headphone": "<span size='12000' rise='-2000'></span>",
+            "default": ["<span size='12000' rise='-2000'></span>", "<span size='12000' rise='-2000'></span>", "<span size='12000' rise='-2000'></span>"]
+        },
+        "on-click": "pavucontrol"
+    },
+    "backlight": {
+        "format": "<span size='12000' rise='-2000'>󰖨</span> {}%",
+        "tooltip": false
+    },
+    "bluetooth": {
+        "format-on": "<span size='12000' rise='-2000'>󰂯</span>",
+        "format-off": "<span size='12000' rise='-2000'>󰂲</span>",
+        "format-disabled": "<span size='12000' rise='-2000'>󰂲</span>",
+        "format-connected-battery": "<span size='12000' rise='-2000'>󰂯</span> {device_alias}",
+        "format-no-controller": "",
+        "tooltip-format": "{num_connections} connected",
+        "tooltip-format-connected": "{num_connections} connected\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_battery_percentage}%",
+        // Toggle bluetooth
+        "on-click": "bluetoothctl show | grep 'Powered:' | grep -q 'yes' && bluetoothctl power off || bluetoothctl power on",
+        "on-click-right": "blueman-manager"
+    }, 
+    "network": {
+        "format-wifi": "{icon}{essid}",
+        "format-icons": ["<span size='12000' rise='-2000'>󰤯</span> ", "<span size='12000' rise='-2000'>󰤟</span> ", "<span size='12000' rise='-2000'>󰤢</span> ", "<span size='12000' rise='-2000'>󰤥</span> ", "<span size='12000' rise='-2000'>󰤨</span> "],
+        "format-linked": "<span size='12000' rise='-2000'>󰖂</span> ",
+        "format-ethernet": "<span size='12000' rise='-2000' foreground='#f5e0dc'>🖧</span>",
+        "format-disconnected": "<span size='12000' rise='-2000' foreground='#f5e0dc'>󰤭 </span>Disconnected",
+        "tooltip-format-wifi": "Signal strength: {signalStrength}%\n{bandwidthDownBits}",
+        "tooltip-format-linked": "{ifname} 󰖂 \n{bandwidthDownBits}",
+        "tooltip-format-ethernet": "{ifname} 🖧\n{bandwidthDownBits}",
+        "interval": 10,
+        "on-click": "kitty nmtui"
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "<span size='12000' rise='-2000' foreground='#a6e3a1'>{icon}</span> {capacity}%",
+        "format-warning": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {capacity}%",
+        "format-critical": "<span size='12000' rise='-2000' foreground='#E38C8F'>{icon}</span> {capacity}%",
+        "format-charging": "<span size='12000' rise='-2000' foreground='#B1E3AD'> </span>{capacity}%",
+        "format-plugged": "<span size='12000' rise='-2000' foreground='#B1E3AD'> </span>{capacity}%",
+        "format-alt": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {time}",
+        "format-full": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "interval": 1
+    },
+    "clock#date": {
+        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%a %b %d}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "interval": 60,
+        "calendar": {
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b> {}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            },
+            "weeks-pos": "right"
+        }
+    },
+    "clock#time": {
+        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%T}",
+        "tooltip": false,
+        "interval": 1
+    }
+}

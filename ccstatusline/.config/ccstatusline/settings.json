@@ -1,0 +1,94 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "4ce9e2c0-57dc-4018-a013-2ce21e33e5bd",
+        "type": "model"
+      },
+      {
+        "id": "a75e80bb-d526-4fb2-bad0-4197aba87139",
+        "type": "separator"
+      },
+      {
+        "id": "9d5cc663-470c-427e-b50e-f6b192aed900",
+        "type": "context-length"
+      },
+      {
+        "id": "f839396f-8d7e-4b1b-9ff7-f07e21cd4df8",
+        "type": "separator"
+      },
+      {
+        "id": "e2f2e8de-857b-43a8-9a9f-7c3b93aab6e2",
+        "type": "session-cost"
+      },
+      {
+        "id": "053ed5bb-9038-4b36-ae09-ec70f23a87d4",
+        "type": "flex-separator"
+      },
+      {
+        "id": "6b825cb2-f40a-440f-8f1a-1c1b2cc602db",
+        "type": "session-clock"
+      },
+      {
+        "id": "4a8c5593-cdbe-4cba-bc42-c1aef3e60ccb",
+        "type": "separator"
+      },
+      {
+        "id": "66892ba9-a7fd-47e7-a1e7-32ac8be6ca82",
+        "type": "thinking-effort"
+      }
+    ],
+    [
+      {
+        "id": "dabceab5-9623-4230-bda8-7911c603a2c9",
+        "type": "current-working-dir",
+        "rawValue": true,
+        "metadata": {
+          "abbreviateHome": "true",
+          "segments": "1"
+        }
+      },
+      {
+        "id": "f059e51e-8dd4-456c-87aa-af9bdab29cf7",
+        "type": "separator"
+      },
+      {
+        "id": "4a79871b-4341-4829-9445-d468f828c788",
+        "type": "git-branch"
+      },
+      {
+        "id": "09bccca5-7399-4a2d-8c26-a6361bdef248",
+        "type": "separator"
+      },
+      {
+        "id": "5f51f1bf-62e5-4f58-8aef-e37f597b162d",
+        "type": "git-changes"
+      }
+    ]
+  ],
+  "flexMode": "full",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
+  },
+  "installation": {
+    "method": "pinned",
+    "installedVersion": "2.2.22"
+  }
+}
