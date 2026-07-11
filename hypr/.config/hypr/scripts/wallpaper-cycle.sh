@@ -7,7 +7,7 @@
 # in hyprpaper >= 0.8, auto-loads the image (no separate preload needed).
 
 WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
-INTERVAL=2700   # seconds between changes (45 minutes)
+INTERVAL=600   # seconds between changes (10 minutes)
 
 # Single-instance guard via flock (avoids killing parent/wrapper shells).
 LOCK="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-cycle.lock"
