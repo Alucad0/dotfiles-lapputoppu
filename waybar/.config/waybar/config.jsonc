@@ -7,13 +7,57 @@
     "margin-top": 6,
     "margin-left": 8,
     "margin-right": 8,
-    "modules-left": ["custom/archlogo", "hyprland/workspaces"],
+    // Two groups so the spotify controller renders as its own island
+    "modules-left": ["group/leftisland", "group/spotify"],
+    "group/leftisland": {
+        "orientation": "inherit",
+        "modules": ["custom/archlogo", "hyprland/workspaces"]
+    },
+    "group/spotify": {
+        "orientation": "inherit",
+        "modules": ["custom/spotify-prev", "custom/spotify-toggle", "custom/spotify-next", "custom/spotify"]
+    },
     "modules-center": [],
     "modules-right": ["cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
     "custom/archlogo": {
         "format": "󰣇",
         "tooltip": false,
         "on-click": "wofi --show drun"
+    },
+    // Spotify controller — modules emit nothing when Spotify is closed,
+    // so the whole group hides. Signal 8 forces an instant refresh on click.
+    "custom/spotify": {
+        "exec": "/home/Alucado/.config/waybar/scripts/spotify.sh info",
+        "return-type": "json",
+        "interval": 2,
+        "signal": 8,
+        "max-length": 45,
+        // hop to the workspace spotify lives on
+        "on-click": "hyprctl dispatch focuswindow 'class:^(Spotify)$'"
+    },
+    "custom/spotify-prev": {
+        "exec": "/home/Alucado/.config/waybar/scripts/spotify.sh prev",
+        "return-type": "json",
+        "interval": 2,
+        "signal": 8,
+        "tooltip": false,
+        "on-click": "playerctl -p spotify previous && pkill -RTMIN+8 waybar"
+    },
+    "custom/spotify-toggle": {
+        "exec": "/home/Alucado/.config/waybar/scripts/spotify.sh toggle",
+        "return-type": "json",
+        "interval": 2,
+        "signal": 8,
+        "tooltip": false,
+        "on-click": "playerctl -p spotify play-pause && pkill -RTMIN+8 waybar"
+    },
+    "custom/spotify-next": {
+        "exec": "/home/Alucado/.config/waybar/scripts/spotify.sh next",
+        "return-type": "json",
+        "interval": 2,
+        "signal": 8,
+        "tooltip": false,
+        "on-click": "playerctl -p spotify next && pkill -RTMIN+8 waybar"
     },
     "cpu": {
         "format": "<span size='12000' rise='-2000'></span> {usage}%",

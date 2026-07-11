@@ -33,18 +33,39 @@ tooltip label {
     padding: 4px;
 }
 
-/* ---- The two frosted islands (left group + right group) ---- */
-.modules-left,
-.modules-right {
+/* ---- The frosted islands ---- */
+/* modules-left is transparent; its two groups (leftisland, spotify)
+   are the visible islands so the spotify controller floats separately */
+.modules-left {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.modules-right,
+#leftisland {
     background-color: alpha(@base, 0.7);
     border-radius: 14px;
     padding: 0 6px;
     margin: 0;
 }
 
+/* No horizontal padding of its own: when Spotify is closed all child
+   modules are hidden and the box collapses to nothing */
+#spotify {
+    background-color: alpha(@base, 0.7);
+    border-radius: 14px;
+    padding: 0;
+    margin-left: 8px;
+}
+
 /* Modules sit transparently inside their island */
 #custom-archlogo,
 #workspaces,
+#custom-spotify,
+#custom-spotify-prev,
+#custom-spotify-toggle,
+#custom-spotify-next,
 #cpu,
 #memory,
 #pulseaudio,
@@ -62,6 +83,10 @@ tooltip label {
 
 /* Subtle hover highlight for clickable status modules */
 #custom-archlogo:hover,
+#custom-spotify:hover,
+#custom-spotify-prev:hover,
+#custom-spotify-toggle:hover,
+#custom-spotify-next:hover,
 #cpu:hover,
 #memory:hover,
 #pulseaudio:hover,
@@ -113,6 +138,28 @@ tooltip label {
 #workspaces button.urgent {
     background-color: @red;
     color: @crust;
+}
+
+/* Spotify controller island (hidden while Spotify is closed) */
+#custom-spotify {
+    color: @green;
+    padding: 2px 12px 2px 6px;
+}
+
+#custom-spotify.paused {
+    color: @overlay1;
+}
+
+#custom-spotify-prev,
+#custom-spotify-toggle,
+#custom-spotify-next {
+    color: @green;
+    font-size: 13px;
+    padding: 2px 6px;
+}
+
+#custom-spotify-prev {
+    padding-left: 10px;
 }
 
 /* ---------------- Right island ---------------- */
