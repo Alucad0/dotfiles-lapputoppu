@@ -45,7 +45,6 @@ tooltip label {
 /* Modules sit transparently inside their island */
 #custom-archlogo,
 #workspaces,
-#tray,
 #cpu,
 #memory,
 #pulseaudio,
@@ -117,18 +116,6 @@ tooltip label {
 }
 
 /* ---------------- Right island ---------------- */
-#tray {
-    padding: 2px 6px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-}
-
 #cpu                 { color: @peach; }
 #memory              { color: @lavender; }
 #pulseaudio          { color: @blue; }
@@ -141,6 +128,7 @@ tooltip label {
 
 #battery.warning  { color: @yellow; }
 #battery.critical { color: @red; }
+#battery.danger   { color: @red; }
 #battery.charging { color: @green; }
 
 @keyframes blink {
@@ -151,7 +139,7 @@ tooltip label {
     }
 }
 
-#battery.critical:not(.charging) {
+#battery.danger:not(.charging) {
     animation-name: blink;
     animation-duration: 0.8s;
     animation-timing-function: linear;

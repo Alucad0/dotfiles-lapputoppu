@@ -9,14 +9,11 @@
     "margin-right": 8,
     "modules-left": ["custom/archlogo", "hyprland/workspaces"],
     "modules-center": [],
-    "modules-right": ["tray", "cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    "modules-right": ["cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
     "custom/archlogo": {
         "format": "󰣇",
         "tooltip": false,
         "on-click": "wofi --show drun"
-    },
-    "tray": {
-        "spacing": 6
     },
     "cpu": {
         "format": "<span size='12000' rise='-2000'></span> {usage}%",
@@ -75,15 +72,14 @@
     "battery": {
         "states": {
             "warning": 30,
-            "critical": 15
+            "critical": 20,
+            "danger": 10
         },
-        "format": "<span size='12000' rise='-2000' foreground='#a6e3a1'>{icon}</span> {capacity}%",
-        "format-warning": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {capacity}%",
-        "format-critical": "<span size='12000' rise='-2000' foreground='#E38C8F'>{icon}</span> {capacity}%",
-        "format-charging": "<span size='12000' rise='-2000' foreground='#B1E3AD'> </span>{capacity}%",
-        "format-plugged": "<span size='12000' rise='-2000' foreground='#B1E3AD'> </span>{capacity}%",
-        "format-alt": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {time}",
-        "format-full": "<span size='12000' rise='-2000' foreground='#B1E3AD'>{icon}</span> {capacity}%",
+        "format": "<span size='12000' rise='-2000'>{icon}</span> {capacity}%",
+        "format-charging": "<span size='12000' rise='-2000'> </span>{capacity}%",
+        "format-plugged": "<span size='12000' rise='-2000'> </span>{capacity}%",
+        "format-alt": "<span size='12000' rise='-2000'>{icon}</span> {time}",
+        "format-full": "<span size='12000' rise='-2000'>{icon}</span> {capacity}%",
         "format-icons": ["", "", "", "", ""],
         "interval": 1
     },
