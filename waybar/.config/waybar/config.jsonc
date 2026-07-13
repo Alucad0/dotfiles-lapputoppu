@@ -18,7 +18,13 @@
         "modules": ["custom/spotify-prev", "custom/spotify-toggle", "custom/spotify-next", "custom/spotify"]
     },
     "modules-center": [],
-    "modules-right": ["cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    "modules-right": ["custom/wallpaper", "cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    "custom/wallpaper": {
+        "format": "<span size='12000' rise='-2000'>󰋩</span>",
+        "tooltip": false,
+        // wofi thumbnail picker; applies via hyprpaper + resets the cycler timer
+        "on-click": "/home/Alucado/.config/waybar/scripts/wallpaper-select.sh"
+    },
     "custom/archlogo": {
         "format": "󰣇",
         "tooltip": false,
@@ -69,7 +75,9 @@
     "memory": {
         "format": "<span size='12000' rise='-2000'></span> {percentage}%",
         "interval": 2,
-        "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB used\nSwap: {swapUsed:0.1f} / {swapTotal:0.1f} GiB"
+        "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB used\nSwap: {swapUsed:0.1f} / {swapTotal:0.1f} GiB",
+        // pin/unpin the memory popup (hover tooltip, but it stays put)
+        "on-click": "python3 /home/Alucado/.config/waybar/scripts/pin-popup.py memory"
     },
     "hyprland/window": {
         "max-length": 60 // Cutoff for window title text
@@ -128,9 +136,11 @@
         "interval": 1
     },
     "clock#date": {
-        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%a %b %d}",
+        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%d-%m-%Y}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "interval": 60,
+        // pin/unpin a calendar popup that stays in place
+        "on-click": "python3 /home/Alucado/.config/waybar/scripts/pin-popup.py calendar",
         "calendar": {
             "format": {
                 "months":     "<span color='#ffead3'><b>{}</b></span>",
