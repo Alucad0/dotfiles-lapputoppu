@@ -122,14 +122,14 @@ tooltip label {
 
 #workspaces button:hover {
     background: alpha(@surface0, 0.8);
-    color: @mauve;
+    color: @sky;
     box-shadow: none;
     text-shadow: none;
 }
 
 #workspaces button.active {
     background-color: @surface1;
-    color: @mauve;
+    color: @sky;
 }
 
 #workspaces button.focused {
@@ -167,11 +167,11 @@ tooltip label {
 /* ---------------- Right island ---------------- */
 #custom-wallpaper    { color: @teal; }
 #cpu                 { color: @peach; }
-#memory              { color: @lavender; }
-#pulseaudio          { color: @blue; }
+#memory              { color: @mauve; }
+#pulseaudio          { color: @sky; }
 #backlight           { color: @yellow; }
 #bluetooth           { color: @sapphire; }
-#network             { color: @green; }
+#network             { color: @blue; }
 #battery             { color: @green; }
 #clock               { color: @maroon; }
 #clock.time          { padding-right: 6px; }
