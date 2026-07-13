@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Promote wallpaper(s) into the repo: moves the real file into the
-# wallpapers package (keeping its subpath under ~/Pictures/Wallpaper)
+# pictures package (keeping its subpath under ~/Pictures/Wallpaper)
 # and symlinks it back, so hyprpaper/waypaper/the cycler still see it.
 #   ./add-wallpaper.sh ~/Pictures/Wallpaper/girl.jpg [more...]
 set -euo pipefail

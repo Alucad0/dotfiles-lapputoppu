@@ -44,7 +44,7 @@ while true; do
     fi
 
     # Collect top-level images only (no recursion into subfolders).
-    mapfile -t images < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \
+    mapfile -t images < <(find -L "$WALLPAPER_DIR" -maxdepth 1 -type f \
         \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
            -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \) | sort)
 
