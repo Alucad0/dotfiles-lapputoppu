@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pinned tooltip popups for waybar (toggle on each invocation).
 
-Usage: pin-popup.py {calendar|memory}
+Usage: pin-popup.py {calendar|memory|cpu}
 
 Clicking the module runs this with its name: first click pins a popup with
 the module's tooltip info under the bar (it stays put and live-updates),
@@ -14,8 +14,9 @@ import os
 import signal
 import subprocess
 import sys
+import time
 
-MODULES = ("calendar", "memory")
+MODULES = ("calendar", "memory", "cpu")
 module = sys.argv[1] if len(sys.argv) > 1 else ""
 if module not in MODULES:
     sys.exit(f"usage: pin-popup.py {{{'|'.join(MODULES)}}}")
@@ -57,7 +58,7 @@ C_TODAY = "#ff6699"
 C_DIM = "#6c7086"
 C_TEXT = "#cdd6f4"
 
-REFRESH_S = {"calendar": 3600, "memory": 2}
+REFRESH_S = {"calendar": 3600, "memory": 2, "cpu": 2}
 
 
 def esc(s):
@@ -123,9 +124,81 @@ def memory_markup():
     return "\n".join(lines)
 
 
+_cpu_prev = {}
+
+
+def read_cpu_ticks():
+    """Return {"cpu"|"cpuN": (busy, total)} from /proc/stat."""
+    ticks = {}
+    with open("/proc/stat") as f:
+        for line in f:
+            if line.startswith("cpu"):
+                parts = line.split()
+                vals = [int(v) for v in parts[1:]]
+                idle = vals[3] + vals[4]  # idle + iowait
+                ticks[parts[0]] = (sum(vals) - idle, sum(vals))
+    return ticks
+
+
+def cpu_markup():
+    global _cpu_prev
+    if not _cpu_prev:
+        _cpu_prev = read_cpu_ticks()
+        time.sleep(0.2)  # short first sample so the initial render has a delta
+    cur = read_cpu_ticks()
+    usage = {}
+    for k, (busy, total) in cur.items():
+        pb, pt = _cpu_prev.get(k, (0, 0))
+        dt = total - pt
+        usage[k] = (busy - pb) / dt if dt > 0 else 0.0
+    _cpu_prev = cur
+
+    load1, load5, load15 = os.getloadavg()
+    freqs = []
+    with open("/proc/cpuinfo") as f:
+        for line in f:
+            if line.startswith("cpu MHz"):
+                freqs.append(float(line.split(":")[1]))
+    freq = f"  {sum(freqs) / len(freqs) / 1000:0.2f} GHz avg" if freqs else ""
+
+    lines = [
+        f"<span color='{C_TITLE}'><b>CPU</b></span>",
+        f"<span color='{C_TEXT}'>{usage.get('cpu', 0) * 100:3.0f}% used{freq}</span>",
+        f"<span color='{C_TEXT}'>Load: {load1:0.2f} {load5:0.2f} {load15:0.2f}</span>",
+        "",
+        f"<span color='{C_HEAD}'><b>Cores</b></span>",
+    ]
+    cores = sorted(
+        (int(k[3:]), u) for k, u in usage.items() if k != "cpu"
+    )
+    for row in range(0, len(cores), 4):
+        cells = "  ".join(
+            f"<span color='{C_DIM}'>{i:2d}</span> "
+            f"<span color='{C_BODY}'>{u * 100:3.0f}%</span>"
+            for i, u in cores[row:row + 4]
+        )
+        lines.append(cells)
+    lines += ["", f"<span color='{C_HEAD}'><b>Top processes</b></span>"]
+    try:
+        ps = subprocess.run(
+            ["ps", "-eo", "%cpu=,comm=", "--sort=-%cpu"],
+            capture_output=True, text=True, timeout=3,
+        ).stdout.splitlines()[:5]
+    except (OSError, subprocess.TimeoutExpired):
+        ps = []
+    for row in ps:
+        parts = row.split(None, 1)
+        if len(parts) == 2:
+            lines.append(
+                f"<span color='{C_BODY}'>{float(parts[0]):5.1f} %  {esc(parts[1][:24])}</span>"
+            )
+    return "\n".join(lines)
+
+
 CONTENT = {
     "calendar": calendar_markup,
     "memory": memory_markup,
+    "cpu": cpu_markup,
 }
 
 

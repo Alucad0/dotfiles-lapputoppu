@@ -70,7 +70,9 @@
         "interval": 2,
         "tooltip": true,
         // Toggles the per-core bar chart dropdown under the bar
-        "on-click": "python3 /home/Alucado/.config/waybar/scripts/cpu-cores-dropdown.py"
+        "on-click": "python3 /home/Alucado/.config/waybar/scripts/cpu-cores-dropdown.py",
+        // pin/unpin the cpu popup (usage, load, per-core, top processes)
+        "on-click-right": "python3 /home/Alucado/.config/waybar/scripts/pin-popup.py cpu"
     },
     "memory": {
         "format": "<span size='12000' rise='-2000'></span> {percentage}%",
