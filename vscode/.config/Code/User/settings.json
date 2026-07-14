@@ -1,0 +1,15 @@
+{
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Monokai Vibrant",
+    "workbench.iconTheme": "vscode-great-icons",
+    "workbench.sideBar.location": "right",
+    // CodeNewRoman is the only Nerd Font installed system-wide; it renders the
+    // glyphs used in waybar/kitty configs. Noto Sans Mono as plain fallback.
+    "editor.fontFamily": "'CodeNewRoman Nerd Font Mono', 'Noto Sans Mono', monospace",
+    "terminal.integrated.fontFamily": "'CodeNewRoman Nerd Font Mono', 'Noto Sans Mono', monospace",
+    "explorer.confirmDragAndDrop": false,
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "pddl.selectedPlanner": "Planning as a service (solver.planning.domains)",
+    "chat.viewSessions.orientation": "stacked"
+}
