@@ -16,3 +16,5 @@ pavucontrol
 blueman
 brightnessctl
 otf-codenewroman-nerd
+noto-fonts-cjk
+noto-fonts-emoji

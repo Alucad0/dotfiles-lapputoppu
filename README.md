@@ -9,7 +9,9 @@ The dotfiles for my riced Arch Linux setup. Catppuccin Mocha everywhere.
 | Terminal | kitty |
 | Shell | zsh |
 | Launcher | wofi |
+| Editor | VS Code — settings in `vscode/`, CodeNewRoman Nerd Font in editor + integrated terminal |
 | Claude Code | ccstatusline status line + settings |
+| Fonts | CodeNewRoman [Nerd Font](https://www.nerdfonts.com/cheat-sheet) for icons, Noto CJK + Color Emoji for Japanese/emoji — `fontconfig/` prefers the JP glyph variants and adds emoji fallback |
 
 ## Layout
 
