@@ -13,6 +13,10 @@ The dotfiles for my riced Arch Linux setup. Catppuccin Mocha everywhere.
 | Claude Code | ccstatusline status line + settings |
 | Fonts | CodeNewRoman [Nerd Font](https://www.nerdfonts.com/cheat-sheet) for icons, Noto CJK + Color Emoji for Japanese/emoji — `fontconfig/` prefers the JP glyph variants and adds emoji fallback |
 
+## Preview
+
+![wyabar](preview_waybar.png)
+
 ## Layout
 
 Every top-level directory is a "package" mirroring its layout relative to `$HOME`
