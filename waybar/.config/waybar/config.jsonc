@@ -134,7 +134,7 @@
         "interval": 1
     },
     "clock#date": {
-        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%d-%m-%Y}",
+        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'> </span>{:%d-%m-%Y}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "interval": 60,
         "calendar": {
@@ -149,7 +149,7 @@
         }
     },
     "clock#time": {
-        "format": "<span size='12000' rise='-2000' foreground='#f5c2e7'> </span>{:%T}",
+        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'> </span>{:%T}",
         "tooltip": false,
         "interval": 1
     }
