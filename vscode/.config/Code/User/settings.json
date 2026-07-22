@@ -11,5 +11,6 @@
     "explorer.confirmDragAndDrop": false,
     "workbench.secondarySideBar.defaultVisibility": "visible",
     "pddl.selectedPlanner": "Planning as a service (solver.planning.domains)",
-    "chat.viewSessions.orientation": "stacked"
+    "chat.viewSessions.orientation": "stacked",
+    "diffEditor.ignoreTrimWhitespace": false
 }
