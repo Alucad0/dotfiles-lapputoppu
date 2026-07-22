@@ -18,7 +18,17 @@
         "modules": ["custom/spotify-prev", "custom/spotify-toggle", "custom/spotify-next", "custom/spotify"]
     },
     "modules-center": [],
-    "modules-right": ["custom/wallpaper", "cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    "modules-right": ["custom/screenshare", "custom/wallpaper", "cpu", "memory", "pulseaudio", "backlight", "bluetooth", "network", "battery", "clock#date", "clock#time"],
+    // Only visible while an HDMI/DP cable is connected; click opens a
+    // wofi menu to mirror or extend (extend parks workspace 10 on the
+    // external screen). Signal 9 refreshes right after a menu action.
+    "custom/screenshare": {
+        "exec": "/home/Alucado/.config/waybar/scripts/screenshare.sh",
+        "return-type": "json",
+        "interval": 3,
+        "signal": 9,
+        "on-click": "/home/Alucado/.config/waybar/scripts/screenshare.sh menu"
+    },
     "custom/wallpaper": {
         "format": "<span size='12000' rise='-2000'>󰋩</span>",
         "tooltip": false,
