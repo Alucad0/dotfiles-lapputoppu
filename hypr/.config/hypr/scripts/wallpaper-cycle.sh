@@ -11,6 +11,11 @@
 WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
 INTERVAL=900   # seconds between changes (15 minutes)
 
+# SDDM's sugar-candy theme shows this file as the login background; keep it in
+# sync with the wallpaper. Needs a one-time `sudo chown $USER` (see README) —
+# silently skipped otherwise. Qt loads by content, so non-jpg sources are fine.
+SDDM_BG="/usr/share/sddm/themes/sugar-candy/Backgrounds/current.jpg"
+
 # Single-instance guard via flock (avoids killing parent/wrapper shells).
 LOCK="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-cycle.lock"
 exec 9>"$LOCK"
@@ -68,6 +73,8 @@ while true; do
     while read -r mon; do
         [ -n "$mon" ] && hyprctl hyprpaper wallpaper "$mon,$img" >/dev/null 2>&1
     done < <(hyprctl monitors | awk '/^Monitor/{print $2}')
+
+    [ -w "$SDDM_BG" ] && cp -f "$img" "$SDDM_BG"
 
     last="$img"
     snooze

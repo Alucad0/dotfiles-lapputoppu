@@ -7,6 +7,10 @@
 
 WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
 
+# Keep the SDDM login background in sync with the pick (same mechanism as
+# wallpaper-cycle.sh — needs the one-time chown from the README, else skipped).
+SDDM_BG="/usr/share/sddm/themes/sugar-candy/Backgrounds/current.jpg"
+
 mapfile -t images < <(find -L "$WALLPAPER_DIR" -maxdepth 1 -type f \
     \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
        -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \) | sort)
@@ -39,6 +43,8 @@ esac
 while read -r mon; do
     [ -n "$mon" ] && hyprctl hyprpaper wallpaper "$mon,$img" >/dev/null 2>&1
 done < <(hyprctl monitors | awk '/^Monitor/{print $2}')
+
+[ -w "$SDDM_BG" ] && cp -f "$img" "$SDDM_BG"
 
 # restart the auto-cycle timer (no-op if the cycler isn't running)
 pkill -USR1 -f 'wallpaper-cycle\.sh' 2>/dev/null

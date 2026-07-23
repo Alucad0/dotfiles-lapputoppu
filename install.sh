@@ -6,11 +6,15 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude wallpapers vscode fontconfig)
+ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude wallpapers vscode fontconfig wofi)
 
 PACKAGES=("${@:-${ALL_PACKAGES[@]}}")
 
 for pkg in "${PACKAGES[@]}"; do
+    if [ "$pkg" = sddm ]; then
+        echo "!! sddm is system config, not a \$HOME package — see README (sudo cp)" >&2
+        exit 1
+    fi
     if [ ! -d "$REPO/$pkg" ]; then
         echo "!! unknown package: $pkg (available: ${ALL_PACKAGES[*]})" >&2
         exit 1

@@ -1,0 +1,21 @@
+## wofi behaviour — used by `wofi --show drun` (Super+R)
+show=drun
+prompt=Search
+width=400
+height=400
+lines=8
+columns=1
+location=center
+orientation=vertical
+halign=fill
+content_halign=left
+allow_markup=true
+allow_images=true
+image_size=28
+insensitive=true
+no_actions=true
+gtk_dark=true
+hide_scroll=true
+matching=fuzzy
+term=kitty
+key_expand=Tab

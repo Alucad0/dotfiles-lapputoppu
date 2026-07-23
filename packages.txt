@@ -4,6 +4,7 @@ hyprpaper
 waybar
 kitty
 wofi
+sddm
 zsh
 git
 github-cli
