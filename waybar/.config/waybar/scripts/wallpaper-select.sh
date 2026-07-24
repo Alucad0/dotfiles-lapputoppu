@@ -11,6 +11,7 @@ WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
 # wallpaper-cycle.sh — needs the one-time chown from the README, else skipped).
 SDDM_BG="/usr/share/sddm/themes/sugar-candy/Backgrounds/current.jpg"
 
+# map files where name ends with .jpg, .jpeg, .png, .webp, .gif, or .bmp into an array 
 mapfile -t images < <(find -L "$WALLPAPER_DIR" -maxdepth 1 -type f \
     \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
        -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \) | sort)
