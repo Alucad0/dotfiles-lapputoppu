@@ -8,7 +8,7 @@
 /* Outer window */
 #window {
     background-color: rgba(30, 30, 46, 0.80);   /* base, semi-transparent for blur */
-    border: 2px solid #33ccff;                  /* hypr active-border cyan */
+    border: 2px solid #a6e3a1;                  /* hypr active-border green */
     border-radius: 10px;                        /* hypr rounding */
     color: #cdd6f4;                             /* text */
     margin: 0;

@@ -6,7 +6,7 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude wallpapers vscode fontconfig wofi)
+ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude wallpapers vscode fontconfig wofi gtk)
 
 PACKAGES=("${@:-${ALL_PACKAGES[@]}}")
 
@@ -35,5 +35,26 @@ for pkg in "${PACKAGES[@]}"; do
         echo "linked: ~/$rel"
     done < <(find "$REPO/$pkg" -type f -print0)
 done
+
+# GTK theme (Catppuccin Mocha, green accent) — downloaded into ~/.themes, not vendored here
+if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
+    GTK_THEME_NAME="catppuccin-mocha-green-standard+default"
+    GTK_THEME_URL="https://github.com/catppuccin/gtk/releases/download/v1.0.3/$GTK_THEME_NAME.zip"
+    if [ ! -d "$HOME/.themes/$GTK_THEME_NAME" ]; then
+        echo "downloading GTK theme: $GTK_THEME_NAME"
+        mkdir -p "$HOME/.themes"
+        curl -sL --fail "$GTK_THEME_URL" | bsdtar -xf - -C "$HOME/.themes"
+    fi
+    # libadwaita (GTK4) apps ignore gtk-theme-name and read css straight from ~/.config/gtk-4.0
+    mkdir -p "$HOME/.config/gtk-4.0"
+    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
+    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk-dark.css" "$HOME/.config/gtk-4.0/gtk-dark.css"
+    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/assets" "$HOME/.config/gtk-4.0/assets"
+    # xdg-desktop-portal-gtk (file choosers) reads the theme from dconf, not settings.ini
+    if command -v gsettings >/dev/null; then
+        gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME_NAME"
+        gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+    fi
+fi
 
 echo "done. backups (if any) in $BACKUP"
