@@ -101,7 +101,9 @@
     },
     "backlight": {
         "format": "<span size='12000' rise='-2000'>󰖨</span> {}%",
-        "tooltip": false
+        "tooltip": false,
+        "on-scroll-up": "~/.config/hypr/scripts/brightness.sh up",
+        "on-scroll-down": "~/.config/hypr/scripts/brightness.sh down"
     },
     "bluetooth": {
         "format-on": "<span size='12000' rise='-2000'>󰂯</span>",
