@@ -49,7 +49,7 @@
         "signal": 8,
         "max-length": 45,
         // hop to the workspace spotify lives on
-        "on-click": "hyprctl dispatch focuswindow 'class:^(Spotify)$'"
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ window = \"class:^(Spotify)$\" })'"
     },
     "custom/spotify-prev": {
         "exec": "/home/Alucado/.config/waybar/scripts/spotify.sh prev",

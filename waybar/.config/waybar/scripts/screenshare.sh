@@ -18,7 +18,7 @@ MIRROR_INT_SCALE="1.2"   # 1600x900 logical, close to the usual 1440x900
 MIRROR_MARKER="${XDG_RUNTIME_DIR:-/tmp}/waybar-screenshare-mirror"
 
 restore_internal() {
-    hyprctl keyword monitor "$INTERNAL,preferred,0x0,2"
+    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = 'preferred', position = '0x0', scale = 2 })"
     rm -f "$MIRROR_MARKER"
 }
 
@@ -54,8 +54,8 @@ if [ "${1:-status}" = "menu" ]; then
     case "$choice" in
         *Mirror*)
             # Same aspect on both screens -> no pillarbox, no side flicker
-            hyprctl keyword monitor "$INTERNAL,$MIRROR_MODE,0x0,$MIRROR_INT_SCALE"
-            hyprctl keyword monitor "$ext,preferred,auto,1,mirror,$INTERNAL"
+            hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = '$MIRROR_MODE', position = '0x0', scale = $MIRROR_INT_SCALE })"
+            hyprctl eval "hl.monitor({ output = '$ext', mode = 'preferred', position = 'auto', scale = 1, mirror = '$INTERNAL' })"
             touch "$MIRROR_MARKER"
             ;;
         *right*)   dir="auto-right" ;;
@@ -63,7 +63,7 @@ if [ "${1:-status}" = "menu" ]; then
         *above*)   dir="auto-up" ;;
         *below*)   dir="auto-down" ;;
         *off*)
-            hyprctl keyword monitor "$ext,disable"
+            hyprctl eval "hl.monitor({ output = '$ext', disabled = true })"
             restore_internal
             ;;
         *) exit 0 ;;
@@ -73,9 +73,9 @@ if [ "${1:-status}" = "menu" ]; then
     # so sharing that display always shows the same workspace
     if [ -n "${dir:-}" ]; then
         restore_internal
-        hyprctl keyword monitor "$ext,preferred,$dir,1"
-        hyprctl keyword workspace "$EXT_WORKSPACE,monitor:$ext,default:true"
-        hyprctl dispatch moveworkspacetomonitor "$EXT_WORKSPACE" "$ext"
+        hyprctl eval "hl.monitor({ output = '$ext', mode = 'preferred', position = '$dir', scale = 1 })"
+        hyprctl eval "hl.workspace_rule({ workspace = '$EXT_WORKSPACE', monitor = '$ext', default = true })"
+        hyprctl dispatch "hl.dsp.workspace.move({ workspace = $EXT_WORKSPACE, monitor = '$ext' })"
     fi
 
     pkill -RTMIN+9 waybar
