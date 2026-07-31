@@ -10,7 +10,6 @@
     "terminal.integrated.fontFamily": "'CodeNewRoman Nerd Font Mono', 'Noto Sans Mono', monospace",
     "explorer.confirmDragAndDrop": false,
     "workbench.secondarySideBar.defaultVisibility": "visible",
-    "pddl.selectedPlanner": "Planning as a service (solver.planning.domains)",
     "chat.viewSessions.orientation": "stacked",
     "diffEditor.ignoreTrimWhitespace": false
 }
