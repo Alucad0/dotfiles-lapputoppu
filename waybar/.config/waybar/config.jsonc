@@ -4,9 +4,10 @@
     "position": "top",
     "reload_style_on_change": true,
     "spacing": 2,
-    "margin-top": 6,
-    "margin-left": 8,
-    "margin-right": 8,
+    // Margins match hyprland.lua general.gaps_in/gaps_out (5px)
+    "margin-top": 5,
+    "margin-left": 5,
+    "margin-right": 5,
     // Separate groups/modules so the spotify controller and the VPN
     // indicator each render as their own island
     "modules-left": ["group/leftisland", "custom/vpn", "group/spotify"],
