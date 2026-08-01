@@ -101,6 +101,10 @@ hl.config({
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = true,
+        -- Default grab area is 15px past the border — enough to reach across
+        -- the gap and swallow clicks on the bottom half of the waybar. Keep
+        -- it tight so resizing needs a precise hover on the border itself.
+        extend_border_grab_area = 3,
 
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
