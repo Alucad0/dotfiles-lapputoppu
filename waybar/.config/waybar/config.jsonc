@@ -7,11 +7,22 @@
     "margin-top": 6,
     "margin-left": 8,
     "margin-right": 8,
-    // Two groups so the spotify controller renders as its own island
-    "modules-left": ["group/leftisland", "group/spotify"],
+    // Separate groups/modules so the spotify controller and the VPN
+    // indicator each render as their own island
+    "modules-left": ["group/leftisland", "custom/vpn", "group/spotify"],
     "group/leftisland": {
         "orientation": "inherit",
         "modules": ["custom/archlogo", "hyprland/workspaces"]
+    },
+    // VPN island — the script emits nothing while no VPN is connected,
+    // so the island stays hidden (same trick as the spotify group)
+    "custom/vpn": {
+        "exec": "/home/Alucado/.config/waybar/scripts/vpn.sh",
+        "return-type": "json",
+        "format": "<span size='12000' rise='-2000'>󰦝</span> {}",
+        "interval": 5,
+        // hop to the workspace the Proton VPN app lives on
+        "on-click": "hyprctl dispatch 'hl.dsp.focus({ window = \"class:^(proton.vpn.app.gtk)$\" })'"
     },
     "group/spotify": {
         "orientation": "inherit",
@@ -118,6 +129,10 @@
         "on-click-right": "blueman-manager"
     }, 
     "network": {
+        // Pin to the wifi interface: without this the module follows the
+        // default route, which jumps to proton0 while the VPN is up and
+        // swaps the wifi icon for the 󰖂 "linked" one
+        "interface": "wl*",
         "format-wifi": "{icon}{essid}",
         "format-icons": ["<span size='12000' rise='-2000'>󰤯</span> ", "<span size='12000' rise='-2000'>󰤟</span> ", "<span size='12000' rise='-2000'>󰤢</span> ", "<span size='12000' rise='-2000'>󰤥</span> ", "<span size='12000' rise='-2000'>󰤨</span> "],
         "format-linked": "<span size='12000' rise='-2000'>󰖂</span> ",
