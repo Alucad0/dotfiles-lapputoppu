@@ -155,11 +155,11 @@ hl.layer_rule({
 })
 
 -- Slight window transparency (active opacity, inactive opacity)
-hl.window_rule({ match = { class = "^(firefox)$" },                opacity = "0.95 0.7" })
-hl.window_rule({ match = { class = "^(code)$" },                   opacity = "0.95 0.7" })
-hl.window_rule({ match = { class = "^(org.kde.dolphin|dolphin)$" }, opacity = "0.85 0.7" })
-hl.window_rule({ match = { class = "^([Ss]potify)$" },             opacity = "0.85 0.7" })
-hl.window_rule({ match = { class = "^(org.kde.gwenview)$" },       opacity = "0.85 0.7" })
+hl.window_rule({ match = { class = "^(firefox)$" },                opacity = "0.95 0.6" })
+hl.window_rule({ match = { class = "^(code)$" },                   opacity = "0.95 0.6" })
+hl.window_rule({ match = { class = "^(org.kde.dolphin|dolphin)$" }, opacity = "0.85 0.6" })
+hl.window_rule({ match = { class = "^([Ss]potify)$" },             opacity = "0.85 0.6" })
+hl.window_rule({ match = { class = "^(org.kde.gwenview)$" },       opacity = "1.0 0.6" })
 -- nmtui is launched from waybar as `kitty --class nmtui -o background_opacity=1.0 nmtui`
 -- so this rule hits only that window, not regular kitty terminals
 hl.window_rule({ match = { class = "^(nmtui)$" },                  opacity = "0.85 0.6" })
