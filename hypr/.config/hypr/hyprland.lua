@@ -163,6 +163,7 @@ hl.window_rule({ match = { class = "^(org.kde.gwenview)$" },       opacity = "1.
 -- nmtui is launched from waybar as `kitty --class nmtui -o background_opacity=1.0 nmtui`
 -- so this rule hits only that window, not regular kitty terminals
 hl.window_rule({ match = { class = "^(nmtui)$" },                  opacity = "0.85 0.6" })
+hl.window_rule({ match = { class = "^(proton.vpn.app.gtk)$" },     opacity = "0.85 0.6" })
 
 -- Default curves, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/#curves
 --                          NAME,          X0,   Y0,   X1,  Y1

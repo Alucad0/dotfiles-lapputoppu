@@ -17,6 +17,7 @@ python-pillow
 pavucontrol
 blueman
 brightnessctl
+proton-vpn-gtk-app
 otf-codenewroman-nerd
 noto-fonts-cjk
 noto-fonts-emoji
