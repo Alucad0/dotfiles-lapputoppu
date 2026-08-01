@@ -127,7 +127,10 @@
         "tooltip-format-linked": "{ifname} 󰖂 \n{bandwidthDownBits}",
         "tooltip-format-ethernet": "{ifname} 🖧\n{bandwidthDownBits}",
         "interval": 10,
-        "on-click": "kitty nmtui"
+        // --class gives the window its own Hyprland opacity rule (see
+        // hyprland.lua); kitty's own 0.45 bg opacity is reset to 1.0 so the
+        // rule's opacity is the only transparency, like the other programs
+        "on-click": "kitty --class nmtui -o background_opacity=1.0 nmtui"
     },
     "battery": {
         "states": {
