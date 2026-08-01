@@ -22,8 +22,8 @@
         "return-type": "json",
         "format": "<span size='12000' rise='-2000'>󰦝</span> {}",
         "interval": 5,
-        // hop to the workspace the Proton VPN app lives on
-        "on-click": "hyprctl dispatch 'hl.dsp.focus({ window = \"class:^(proton.vpn.app.gtk)$\" })'"
+        // focus the Proton VPN window, or launch the app if it has none
+        "on-click": "/home/Alucado/.config/waybar/scripts/vpn.sh click"
     },
     "group/spotify": {
         "orientation": "inherit",

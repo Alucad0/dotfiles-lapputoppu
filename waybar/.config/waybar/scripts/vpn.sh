@@ -9,7 +9,18 @@
 # last-resort fallback for apps that bypass NetworkManager. If the app
 # runs without a connection the island shows a dimmed "[VPN]".
 #   vpn.sh -> {"text":"[Sweden]", ...}, {"text":"[VPN]", ...} or nothing
+#   vpn.sh click -> focus the Proton VPN window, or launch the app if it
+#                   has no window (closed, or minimized to tray)
 set -uo pipefail
+
+if [ "${1:-}" = "click" ]; then
+    if hyprctl clients -j 2>/dev/null | grep -q '"class": "proton.vpn.app.gtk"'; then
+        hyprctl dispatch 'hl.dsp.focus({ window = "class:^(proton.vpn.app.gtk)$" })'
+    else
+        setsid protonvpn-app >/dev/null 2>&1 &
+    fi
+    exit 0
+fi
 
 country_name() { # ISO 3166 alpha-2 code -> country name (falls back to the code)
     local code=${1^^} name=""
