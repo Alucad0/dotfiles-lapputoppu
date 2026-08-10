@@ -60,7 +60,7 @@ tooltip label {
     margin-left: 5px;
 }
 
-/* VPN island — hidden while no VPN is connected (script emits nothing) */
+/* VPN island — always visible; dimmed while no VPN is connected */
 #custom-vpn {
     background-color: alpha(@base, 0.7);
     border-radius: 14px;

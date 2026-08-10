@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
-# Waybar VPN island — prints nothing while the Proton VPN app is closed
-# and no VPN is up, so waybar hides the module and the island collapses
-# (same trick as spotify.sh).
+# Waybar VPN island — always prints something, so the island is permanently
+# visible and doubles as a launcher for the Proton VPN app.
 # Proton VPN (GTK app) creates an NM wireguard connection named
 # "ProtonVPN <server>" (e.g. "ProtonVPN SE#65") on device proton0 — the
 # server's country code becomes "[Sweden]". Other NM vpn/wireguard
 # connections show their name; raw wg*/tun*/tailscale* interfaces are a
-# last-resort fallback for apps that bypass NetworkManager. If the app
-# runs without a connection the island shows a dimmed "[VPN]".
-#   vpn.sh -> {"text":"[Sweden]", ...}, {"text":"[VPN]", ...} or nothing
+# last-resort fallback for apps that bypass NetworkManager. With no tunnel
+# up the island shows a dimmed "[VPN]".
+#   vpn.sh -> {"text":"[Sweden]", ...} or {"text":"[VPN]", ...}
 #   vpn.sh click -> focus the Proton VPN window, or launch the app if it
 #                   has no window (closed, or minimized to tray)
 set -uo pipefail
@@ -62,9 +61,12 @@ for ifpath in /sys/class/net/wg* /sys/class/net/tun* /sys/class/net/tailscale*; 
     emit "[$iface]" "$iface (interface up, managed outside NetworkManager)"
 done
 
-# No tunnel up — but keep the island (dimmed) while the Proton app runs
+# No tunnel up — keep the island (dimmed); the tooltip says whether the
+# Proton app is running, since clicking launches it when it isn't
 if pgrep -f protonvpn-app >/dev/null 2>&1; then
     printf '{"text":"[VPN]","tooltip":"Proton VPN: disconnected","class":"disconnected"}\n'
+else
+    printf '{"text":"[VPN]","tooltip":"Proton VPN: not running — click to open","class":"disconnected"}\n'
 fi
 
 exit 0

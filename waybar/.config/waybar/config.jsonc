@@ -26,8 +26,8 @@
         "orientation": "inherit",
         "modules": ["custom/archlogo", "hyprland/workspaces"]
     },
-    // VPN island — the script emits nothing while no VPN is connected,
-    // so the island stays hidden (same trick as the spotify group)
+    // VPN island — always visible: the script prints the connected country
+    // when a tunnel is up and a dimmed "[VPN]" otherwise
     "custom/vpn": {
         "exec": "/home/Alucado/.config/waybar/scripts/vpn.sh",
         "return-type": "json",
