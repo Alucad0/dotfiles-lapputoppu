@@ -74,6 +74,21 @@ tooltip label {
     color: @overlay1;
 }
 
+/* The tray module is only here to provide org.kde.StatusNotifierWatcher so
+   Proton VPN's x button hides the window instead of quitting (see
+   config.jsonc). Nothing should be drawn — icon-size is 1 there and the
+   remaining pixel is made transparent here. */
+#tray,
+#tray > .passive,
+#tray > .active,
+#tray > .needs-attention {
+    background-color: transparent;
+    opacity: 0;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
 #custom-vpn:hover {
     background-color: alpha(@surface0, 0.7);
 }

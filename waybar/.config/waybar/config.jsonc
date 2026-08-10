@@ -10,7 +10,18 @@
     "margin-right": 5,
     // Separate groups/modules so the spotify controller and the VPN
     // indicator each render as their own island
-    "modules-left": ["group/leftisland", "custom/vpn", "group/spotify"],
+    "modules-left": ["group/leftisland", "custom/vpn", "group/spotify", "tray"],
+    // Invisible (see style.css) — it exists only so waybar owns
+    // org.kde.StatusNotifierWatcher on the session bus. The Proton VPN app
+    // probes that name at startup; when it's there the window's x button
+    // hides the window instead of quitting the app, so the VPN keeps running
+    // in the background. The custom/vpn island is the actual indicator, so
+    // the tray icon itself is shrunk away. To show real tray icons instead,
+    // drop the icon-size below and the #tray rule in style.css.
+    "tray": {
+        "icon-size": 1,
+        "spacing": 0
+    },
     "group/leftisland": {
         "orientation": "inherit",
         "modules": ["custom/archlogo", "hyprland/workspaces"]
