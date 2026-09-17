@@ -149,7 +149,7 @@
         "format-icons": ["<span size='12000' rise='-2000'>󰤯</span> ", "<span size='12000' rise='-2000'>󰤟</span> ", "<span size='12000' rise='-2000'>󰤢</span> ", "<span size='12000' rise='-2000'>󰤥</span> ", "<span size='12000' rise='-2000'>󰤨</span> "],
         "format-linked": "<span size='12000' rise='-2000'>󰖂</span> ",
         "format-ethernet": "<span size='12000' rise='-2000' foreground='#f5e0dc'>🖧</span>",
-        "format-disconnected": "<span size='12000' rise='-2000' foreground='#f5e0dc'>󰤭 </span>Disconnected",
+        "format-disconnected": "<span size='12000' rise='-2000' foreground='#f5e0dc'>󰤭</span> Disconnected",
         "tooltip-format-wifi": "Signal strength: {signalStrength}%\n{bandwidthDownBits}",
         "tooltip-format-linked": "{ifname} 󰖂 \n{bandwidthDownBits}",
         "tooltip-format-ethernet": "{ifname} 🖧\n{bandwidthDownBits}",
@@ -166,15 +166,15 @@
             "danger": 10
         },
         "format": "<span size='12000' rise='-2000'>{icon}</span> {capacity}%",
-        "format-charging": "<span size='12000' rise='-2000'> </span>{capacity}%",
-        "format-plugged": "<span size='12000' rise='-2000'> </span>{capacity}%",
+        "format-charging": "<span size='12000' rise='-2000'></span> {capacity}%",
+        "format-plugged": "<span size='12000' rise='-2000'></span> {capacity}%",
         "format-alt": "<span size='12000' rise='-2000'>{icon}</span> {time}",
         "format-full": "<span size='12000' rise='-2000'>{icon}</span> {capacity}%",
         "format-icons": ["", "", "", "", ""],
         "interval": 1
     },
     "clock#date": {
-        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'> </span>{:%d-%m-%Y}",
+        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'></span> {:%Y-%m-%d}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "interval": 60,
         "calendar": {
@@ -189,7 +189,7 @@
         }
     },
     "clock#time": {
-        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'> </span>{:%T}",
+        "format": "<span size='12000' rise='-2000' foreground='#eba0ac'></span> {:%T}",
         "tooltip": false,
         "interval": 1
     }
