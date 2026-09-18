@@ -125,3 +125,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # ccstatusline config TUI (runs via bun, no node installed)
 alias ccstatusline="bun $HOME/.cache/.bun/bin/ccstatusline"
+
+# Hyprland's log is ~99% libinput touchpad debug from aquamarine (gesture/tap
+# state machines). `debug:disable_logs` doesn't gate those - they come from
+# aquamarine's own logger - so filter them out when reading instead.
+alias hyprlog="grep -vE 'DEBUG from aquamarine' \"\$(ls -t /run/user/\$UID/hypr/*/hyprland.log | head -1)\""
