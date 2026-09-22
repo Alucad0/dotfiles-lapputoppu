@@ -61,6 +61,29 @@ for pkg in "${PACKAGES[@]}"; do
     done < <(find "$REPO/$pkg" -type f -print0)
 done
 
+# Links whose repo file was moved or renamed (e.g. wallpapers sorted into theme
+# folders) are left dangling by the loop above. Remove those — only symlinks
+# that point into this repo and resolve to nothing — from every directory a
+# linked file lives in, plus its parents up to $HOME.
+declare -A DIRS=()
+for pkg in "${PACKAGES[@]}"; do
+    while IFS= read -r -d '' src; do
+        dir="$(dirname "$HOME/${src#"$REPO/$pkg/"}")"
+        while [ "$dir" != "$HOME" ] && [ "$dir" != / ]; do
+            DIRS[$dir]=1
+            dir="$(dirname "$dir")"
+        done
+    done < <(find "$REPO/$pkg" -type f -print0)
+done
+for dir in "${!DIRS[@]}"; do
+    [ -d "$dir" ] || continue
+    while IFS= read -r -d '' link; do
+        case "$(readlink "$link")" in
+            "$REPO"/*) run rm "$link"; echo "removed dangling: ~/${link#"$HOME/"}" ;;
+        esac
+    done < <(find "$dir" -maxdepth 1 -xtype l -print0)
+done
+
 # oh-my-zsh + powerlevel10k are git clones, not packages. Cloned directly
 # rather than run through omz's install.sh, which would overwrite the ~/.zshrc
 # symlink this script just created.
