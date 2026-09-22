@@ -295,8 +295,8 @@ hl.bind(mainMod .. " + M", hl.dsp.exit()) -- goto Hyprland exit menu
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- switch between vertical/horizontal split in dwindle
 
 -- Screenshot bindings
--- hl.bind("Print", hl.dsp.exec_cmd("/home/Alucado/.local/bin/screenshot"))
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("/home/Alucado/.local/bin/snapshot"))
+-- hl.bind("Print", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.local/bin/snapshot"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))

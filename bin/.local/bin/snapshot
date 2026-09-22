@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Quick full screenshot without selection (SUPER+P in hyprland.lua)
+set -euo pipefail
+out="$HOME/Pictures/screenshots"
+mkdir -p "$out"
+grim "$out/snapshot_$(date +%Y%m%d_%H%M%S).png"
