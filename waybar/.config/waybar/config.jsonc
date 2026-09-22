@@ -110,9 +110,6 @@
         "interval": 2,
         "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB used\nSwap: {swapUsed:0.1f} / {swapTotal:0.1f} GiB"
     },
-    "hyprland/window": {
-        "max-length": 60 // Cutoff for window title text
-    },
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "format-muted": "<span size='12000' rise='-2000'></span> ",
