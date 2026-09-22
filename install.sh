@@ -36,6 +36,22 @@ for pkg in "${PACKAGES[@]}"; do
     done < <(find "$REPO/$pkg" -type f -print0)
 done
 
+# oh-my-zsh + powerlevel10k are git clones, not packages. Cloned directly
+# rather than run through omz's install.sh, which would overwrite the ~/.zshrc
+# symlink this script just created.
+if [[ " ${PACKAGES[*]} " == *" zsh "* ]]; then
+    OMZ="$HOME/.oh-my-zsh"
+    P10K="$OMZ/custom/themes/powerlevel10k"
+    if [ ! -d "$OMZ" ]; then
+        echo "cloning oh-my-zsh"
+        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$OMZ"
+    fi
+    if [ ! -d "$P10K" ]; then
+        echo "cloning powerlevel10k"
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K"
+    fi
+fi
+
 # GTK theme (Catppuccin Mocha, green accent) — downloaded into ~/.themes, not vendored here
 if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
     GTK_THEME_NAME="catppuccin-mocha-green-standard+default"
