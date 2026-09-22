@@ -51,7 +51,11 @@ for pkg in "${PACKAGES[@]}"; do
         if [ -L "$dest" ] && [ "$(readlink -f "$dest")" = "$src" ]; then
             continue  # already linked
         fi
-        if [ -e "$dest" ] || [ -L "$dest" ]; then
+        if [ -L "$dest" ] && [[ "$(readlink "$dest")" == "$REPO"/* ]]; then
+            # an old link into this repo (its file moved): nothing to back up,
+            # and a "backup" would just be another dead link
+            run rm "$dest"
+        elif [ -e "$dest" ] || [ -L "$dest" ]; then
             run mkdir -p "$BACKUP/$(dirname "$rel")"
             run mv "$dest" "$BACKUP/$rel"
             echo "backed up: ~/$rel"
