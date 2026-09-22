@@ -2,7 +2,7 @@
   "model": "claude-fable-5[1m]",
   "statusLine": {
     "type": "command",
-    "command": "/home/Alucado/.bun/bin/bun /home/Alucado/.cache/.bun/bin/ccstatusline",
+    "command": "$HOME/.bun/bin/bun $HOME/.cache/.bun/bin/ccstatusline",
     "padding": 0,
     "refreshInterval": 10
   },
