@@ -4,3 +4,7 @@
 *.orig
 *~
 *.swp
+
+# Python bytecode (scripts under waybar/ are run directly, but a py_compile
+# or import leaves these, and install.sh would link them)
+__pycache__/
