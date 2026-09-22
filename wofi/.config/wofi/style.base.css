@@ -1,0 +1,84 @@
+/* The rules for wofi's look. wofi reads ~/.config/wofi/style.css, which is
+   *generated*: ~/.local/bin/theme writes it as the active theme's palette
+   (Catppuccin Mocha + the theme's undertone neutrals and @accent) followed by
+   this file. It can't be an @import like waybar's: wofi loads its css as a
+   string, so a relative import resolves against wofi's working directory.
+   Edit this file, then run `theme apply`. Rounding matches Hyprland's 10. */
+
+* {
+    font-family: "MesloLGS Nerd Font Mono", monospace;
+    font-size: 14px;
+}
+
+/* Outer window */
+#window {
+    background-color: alpha(@base, 0.80);       /* semi-transparent for blur */
+    border: 2px solid @accent;                  /* = hypr active border */
+    border-radius: 10px;                        /* hypr rounding */
+    color: @text;
+    margin: 0;
+}
+
+/* Search box */
+#input {
+    margin: 12px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: @surface0;
+    color: @text;
+    outline: none;
+}
+
+#input:focus {
+    border: 2px solid @blue;
+}
+
+#input image {
+    color: @subtext0;
+}
+
+/* Results area */
+#inner-box {
+    margin: 4px 8px 8px 8px;
+    background-color: transparent;
+}
+
+#outer-box {
+    margin: 0;
+    background-color: transparent;
+}
+
+#scroll {
+    margin: 0;
+}
+
+/* Each entry */
+#entry {
+    padding: 8px 10px;
+    margin: 2px 4px;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+#entry image {
+    margin-right: 10px;
+}
+
+#text {
+    color: @text;
+}
+
+/* Selected entry — the theme accent, like the hypr active border */
+#entry:selected {
+    background-color: @surface1;
+    border-left: 3px solid @accent;
+}
+
+#entry:selected #text {
+    color: @accent;
+}
+
+#text:selected {
+    color: @accent;
+}
