@@ -9,7 +9,7 @@
 # without changing the wallpaper, so that pick stays up a full interval.
 
 THEME="$HOME/.local/bin/theme"
-INTERVAL=900   # seconds between changes (15 minutes)
+INTERVAL=1200  # seconds between changes (20 minutes)
 
 # Single-instance guard via flock (avoids killing parent/wrapper shells).
 LOCK="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-cycle.lock"
