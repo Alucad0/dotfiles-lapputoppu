@@ -82,6 +82,35 @@ hl.env("NEWT_COLORS", "root=#a6adc8,#11111b;roottext=#a6adc8,#11111b;helpline=#a
 -- hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")
 
 
+-----------------
+---- THEME ------
+-----------------
+
+-- Border colours follow the active desktop theme (~/.local/bin/theme). The
+-- theme script recolours borders live via `hyprctl eval`, but Hyprland reloads
+-- this file on every save, so it has to read the theme itself too or a reload
+-- would snap the borders back to a hardcoded colour.
+local function theme_colors()
+    local home   = os.getenv("HOME")
+    -- fallback = the pre-theme look (green accent, grey inactive border)
+    local colors = { accent = "a6e3a1", surface2 = "595959" }
+    local state  = io.open(home .. "/.local/state/theme/current", "r")
+    if not state then return colors end
+    local name = state:read("l")
+    state:close()
+    local file = name and io.open(home .. "/.config/themes/" .. name .. ".theme", "r")
+    if not file then return colors end
+    for line in file:lines() do
+        local key, value = line:match("^(%w+)=(%x%x%x%x%x%x)$")
+        if key then colors[key] = value end
+    end
+    file:close()
+    return colors
+end
+
+local theme = theme_colors()
+
+
 -----------------------
 ---- LOOK AND FEEL ----
 -----------------------
@@ -95,8 +124,8 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = "rgba(a6e3a1ee)",
-            inactive_border = "rgba(595959aa)",
+            active_border   = "rgba(" .. theme.accent .. "ee)",
+            inactive_border = "rgba(" .. theme.surface2 .. "aa)",
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
