@@ -1,0 +1,6 @@
+# App-written leftovers that land next to the tracked configs
+*.bak
+*.bak[0-9]
+*.orig
+*~
+*.swp
