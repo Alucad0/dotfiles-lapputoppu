@@ -52,11 +52,17 @@
         "signal": 9,
         "on-click": "$HOME/.config/waybar/scripts/screenshare.sh menu"
     },
+    // Wallpaper + theme island: icon is tinted with the theme accent and the
+    // tooltip names the theme. `theme` SIGUSR2-reloads waybar on every switch,
+    // which re-runs this exec, so "once" is enough.
     "custom/wallpaper": {
-        "format": "<span size='12000' rise='-2000'>󰋩</span>",
-        "tooltip": false,
-        // wofi thumbnail picker; applies via hyprpaper + resets the cycler timer
-        "on-click": "$HOME/.config/waybar/scripts/wallpaper-select.sh"
+        "exec": "$HOME/.local/bin/theme waybar",
+        "return-type": "json",
+        "interval": "once",
+        // wofi thumbnail picker over all themes; picking another theme's
+        // wallpaper switches theme, and resets the cycler timer either way
+        "on-click": "$HOME/.config/waybar/scripts/wallpaper-select.sh",
+        "on-click-right": "$HOME/.local/bin/theme next"
     },
     "custom/archlogo": {
         "format": "󰣇",
