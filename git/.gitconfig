@@ -1,3 +1,13 @@
+[init]
+	defaultBranch = main
+[pull]
+	# rebase local commits on top of the remote instead of making merge commits
+	rebase = true
+[push]
+	# `git push` on a new branch sets its upstream instead of erroring out
+	autoSetupRemote = true
+[core]
+	editor = nano
 [user]
 	name = magnev
 	email = magnev@kth.se
