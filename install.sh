@@ -2,13 +2,38 @@
 # Symlinks every file in the given packages (default: all) into $HOME,
 # mirroring the repo's directory structure — GNU stow layout, no stow needed.
 # Existing real files are moved to ~/.dotfiles-backup/<timestamp>/ first.
+#
+#   ./install.sh                # link everything
+#   ./install.sh waybar zsh     # ...or just some packages
+#   ./install.sh -n             # dry run: print what would happen, change nothing
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures vscode fontconfig wofi gtk bin kde xdg)
+ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures
+              vscode fontconfig wofi gtk bin kde xdg)
 
-PACKAGES=("${@:-${ALL_PACKAGES[@]}}")
+DRY_RUN=0
+ARGS=()
+for arg in "$@"; do
+    case "$arg" in
+        -n|--dry-run) DRY_RUN=1 ;;
+        -h|--help)    sed -n '2,8p' "$0" | sed 's/^# \?//'; exit 0 ;;
+        -*)           echo "!! unknown flag: $arg" >&2; exit 1 ;;
+        *)            ARGS+=("$arg") ;;
+    esac
+done
+
+PACKAGES=("${ARGS[@]:-${ALL_PACKAGES[@]}}")
+
+# Every mutating command goes through this, so --dry-run is one code path.
+run() {
+    if (( DRY_RUN )); then
+        printf 'would:'; printf ' %q' "$@"; printf '\n'
+    else
+        "$@"
+    fi
+}
 
 for pkg in "${PACKAGES[@]}"; do
     if [ "$pkg" = sddm ]; then
@@ -22,16 +47,16 @@ for pkg in "${PACKAGES[@]}"; do
     while IFS= read -r -d '' src; do
         rel="${src#"$REPO/$pkg/"}"
         dest="$HOME/$rel"
-        mkdir -p "$(dirname "$dest")"
+        run mkdir -p "$(dirname "$dest")"
         if [ -L "$dest" ] && [ "$(readlink -f "$dest")" = "$src" ]; then
             continue  # already linked
         fi
         if [ -e "$dest" ] || [ -L "$dest" ]; then
-            mkdir -p "$BACKUP/$(dirname "$rel")"
-            mv "$dest" "$BACKUP/$rel"
+            run mkdir -p "$BACKUP/$(dirname "$rel")"
+            run mv "$dest" "$BACKUP/$rel"
             echo "backed up: ~/$rel"
         fi
-        ln -s "$src" "$dest"
+        run ln -s "$src" "$dest"
         echo "linked: ~/$rel"
     done < <(find "$REPO/$pkg" -type f -print0)
 done
@@ -44,11 +69,11 @@ if [[ " ${PACKAGES[*]} " == *" zsh "* ]]; then
     P10K="$OMZ/custom/themes/powerlevel10k"
     if [ ! -d "$OMZ" ]; then
         echo "cloning oh-my-zsh"
-        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$OMZ"
+        run git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$OMZ"
     fi
     if [ ! -d "$P10K" ]; then
         echo "cloning powerlevel10k"
-        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K"
+        run git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K"
     fi
 fi
 
@@ -58,19 +83,28 @@ if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
     GTK_THEME_URL="https://github.com/catppuccin/gtk/releases/download/v1.0.3/$GTK_THEME_NAME.zip"
     if [ ! -d "$HOME/.themes/$GTK_THEME_NAME" ]; then
         echo "downloading GTK theme: $GTK_THEME_NAME"
-        mkdir -p "$HOME/.themes"
-        curl -sL --fail "$GTK_THEME_URL" | bsdtar -xf - -C "$HOME/.themes"
+        run mkdir -p "$HOME/.themes"
+        if (( DRY_RUN )); then
+            echo "would: curl -sL $GTK_THEME_URL | bsdtar -xf - -C $HOME/.themes"
+        else
+            curl -sL --fail "$GTK_THEME_URL" | bsdtar -xf - -C "$HOME/.themes"
+        fi
     fi
     # libadwaita (GTK4) apps ignore gtk-theme-name and read css straight from ~/.config/gtk-4.0
-    mkdir -p "$HOME/.config/gtk-4.0"
-    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
-    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk-dark.css" "$HOME/.config/gtk-4.0/gtk-dark.css"
-    ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/assets" "$HOME/.config/gtk-4.0/assets"
+    run mkdir -p "$HOME/.config/gtk-4.0"
+    run ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk.css" "$HOME/.config/gtk-4.0/gtk.css"
+    run ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/gtk-dark.css" "$HOME/.config/gtk-4.0/gtk-dark.css"
+    run ln -sfn "$HOME/.themes/$GTK_THEME_NAME/gtk-4.0/assets" "$HOME/.config/gtk-4.0/assets"
     # xdg-desktop-portal-gtk (file choosers) reads the theme from dconf, not settings.ini
     if command -v gsettings >/dev/null; then
-        gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME_NAME"
-        gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+        run gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME_NAME"
+        run gsettings set org.gnome.desktop.interface color-scheme prefer-dark
     fi
 fi
 
-echo "done. backups (if any) in $BACKUP"
+if (( DRY_RUN )); then
+    echo "dry run — nothing was changed."
+else
+    echo "done. backups (if any) in $BACKUP"
+    echo "not covered here: packages, services and SDDM — see the README."
+fi
