@@ -1,0 +1,26 @@
+# Green · brighter — a dark theme, only the undertone differs from the others.
+# Catppuccin Mocha's neutrals re-hued to 140° (forest green), same
+# lightness as Mocha. Goes with the brighter, warmer wallpapers.
+#
+# Read by ~/.local/bin/theme (bash), hyprland.lua (Lua) and
+# cpu-cores-dropdown.py (via the generated css). Keep it KEY=VALUE, one per
+# line, colours as 6-digit hex without '#'. Wallpapers for this theme live
+# in ~/Pictures/Wallpaper/green/.
+label="Green · brighter"
+
+# accent: hyprland active border, wofi border + selection, waybar theme icon
+accent=a6e3a1
+
+# neutrals — text down to the darkest background
+text=d0f1db
+subtext1=bddbc7
+subtext0=a9c5b2
+overlay2=95b09e
+overlay1=819a89
+overlay0=6e8475
+surface2=5a6e61
+surface1=47584d
+surface0=324338
+base=1f2d24
+mantle=19241d
+crust=121a15

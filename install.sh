@@ -11,7 +11,7 @@ set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures
-              vscode fontconfig wofi gtk bin kde xdg)
+              vscode fontconfig wofi gtk bin kde xdg themes)
 
 DRY_RUN=0
 ARGS=()
@@ -122,6 +122,18 @@ if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
     if command -v gsettings >/dev/null; then
         run gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME_NAME"
         run gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+    fi
+fi
+
+# waybar @imports a generated theme.css and wofi reads a generated style.css;
+# neither exists until the theme script has run once (waybar then logs an
+# import error, wofi comes up unstyled).
+if [[ " ${PACKAGES[*]} " =~ \ (themes|waybar|wofi)\  ]]; then
+    if [ -x "$HOME/.local/bin/theme" ] || (( DRY_RUN )); then
+        echo "generating theme palette"
+        run "$HOME/.local/bin/theme" apply
+    else
+        echo "!! ~/.local/bin/theme missing — link the bin package, then run: theme apply" >&2
     fi
 fi
 

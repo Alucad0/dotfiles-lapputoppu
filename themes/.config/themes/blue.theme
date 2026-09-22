@@ -1,0 +1,26 @@
+# Blue · darker — a dark theme, only the undertone differs from the others.
+# Catppuccin Mocha's neutrals re-hued to 215° (navy), with the
+# background layers (surface*/base/mantle/crust) 20% darker than Mocha.
+#
+# Read by ~/.local/bin/theme (bash), hyprland.lua (Lua) and
+# cpu-cores-dropdown.py (via the generated css). Keep it KEY=VALUE, one per
+# line, colours as 6-digit hex without '#'. Wallpapers for this theme live
+# in ~/Pictures/Wallpaper/blue/.
+label="Blue · darker"
+
+# accent: hyprland active border, wofi border + selection, waybar theme icon
+accent=89b4fa
+
+# neutrals — text down to the darkest background
+text=cdddf4
+subtext1=bac9de
+subtext0=a6b4c8
+overlay2=93a0b2
+overlay1=7f8b9c
+overlay0=6c7786
+surface2=464e5a
+surface1=373e48
+surface0=272e36
+base=181d25
+mantle=13181e
+crust=0e1116
