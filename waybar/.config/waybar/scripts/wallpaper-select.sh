@@ -1,27 +1,34 @@
 #!/usr/bin/env bash
-# Wallpaper picker behind the waybar image icon: wofi thumbnail grid over
-# the top-level images in ~/Pictures/Wallpaper. Applies the pick through
-# hyprpaper IPC (same command wallpaper-cycle.sh uses), then signals the
-# cycler with USR1 so its auto-cycle timer restarts at a full interval
-# without immediately replacing the manual pick.
+# Wallpaper picker behind the waybar image icon: wofi thumbnail grid of every
+# theme's wallpapers (~/Pictures/Wallpaper/<theme>/), the current theme's
+# first. Other themes' entries are tagged with their theme's name, and picking
+# one switches the whole desktop to that theme. The pick goes through
+# ~/.local/bin/theme (hyprpaper IPC + SDDM sync), then the cycler gets USR1 so
+# its auto-cycle timer restarts at a full interval without immediately
+# replacing the manual pick.
 
-WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
+THEME="$HOME/.local/bin/theme"
+current="$("$THEME")"
 
-# Keep the SDDM login background in sync with the pick (same mechanism as
-# wallpaper-cycle.sh — needs the one-time chown from the README, else skipped).
-SDDM_BG="/usr/share/sddm/themes/sugar-candy/Backgrounds/current.jpg"
+# current theme first, then the rest in their usual order
+mapfile -t order < <(printf '%s\n' "$current"; "$THEME" list | grep -vxF -- "$current")
 
-# map files where name ends with .jpg, .jpeg, .png, .webp, .gif, or .bmp into an array 
-mapfile -t images < <(find -L "$WALLPAPER_DIR" -maxdepth 1 -type f \
-    \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
-       -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \) | sort)
+images=() labels=()
+for t in "${order[@]}"; do
+    while IFS= read -r img; do
+        [ -n "$img" ] || continue
+        name="$(basename "$img")"; name="${name%.*}"
+        [ "$t" = "$current" ] || name="$name · $t"
+        images+=("$img"); labels+=("$name")
+    done < <("$THEME" images "$t")
+done
 (( ${#images[@]} > 0 )) || exit 0
 
-choice=$(for img in "${images[@]}"; do
-        name="$(basename "$img")"
-        printf 'img:%s:text:%s\n' "$img" "${name%.*}"
+
+choice=$(for i in "${!images[@]}"; do
+        printf 'img:%s:text:%s\n' "${images[i]}" "${labels[i]}"
     done | wofi --dmenu --allow-images --define image_size=110 \
-        --columns 4 --width 640 --height 480 --prompt 'wallpaper' \
+        --columns 4 --width 640 --height 480 --prompt "wallpaper — $("$THEME" label)" \
         --insensitive --hide-scroll --cache-file /dev/null)
 [ -n "$choice" ] || exit 0
 
@@ -33,19 +40,15 @@ case "$choice" in
         ;;
     *)
         img=""
-        for f in "${images[@]}"; do
-            name="$(basename "$f")"
-            [ "${name%.*}" = "$choice" ] && img="$f" && break
+        for i in "${!labels[@]}"; do
+            [ "${labels[i]}" = "$choice" ] && img="${images[i]}" && break
         done
         ;;
 esac
 [ -f "$img" ] || exit 1
 
-while read -r mon; do
-    [ -n "$mon" ] && hyprctl hyprpaper wallpaper "$mon,$img" >/dev/null 2>&1
-done < <(hyprctl monitors | awk '/^Monitor/{print $2}')
-
-[ -w "$SDDM_BG" ] && cp -f "$img" "$SDDM_BG"
+# switches theme first if the image lives in another theme's folder
+"$THEME" wallpaper "$img"
 
 # restart the auto-cycle timer (no-op if the cycler isn't running); exact
 # command-line match so an editor with the script open doesn't get the USR1

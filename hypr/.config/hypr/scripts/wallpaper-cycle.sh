@@ -1,20 +1,15 @@
 #!/usr/bin/env bash
-# Randomly cycles the Hyprland wallpaper among the top-level images in
-# ~/Pictures/Wallpaper, changing every INTERVAL seconds. Re-scans the folder
-# every cycle, so images added/removed later are picked up automatically.
-# SIGUSR1 (sent by waybar's wallpaper-select.sh after a manual pick) restarts
-# the timer without changing the wallpaper, so the pick stays a full interval.
-#
-# Uses hyprpaper's IPC: `hyprctl hyprpaper wallpaper "MONITOR,path"` which,
-# in hyprpaper >= 0.8, auto-loads the image (no separate preload needed).
+# Randomly cycles the Hyprland wallpaper among the images of the *current
+# theme* (~/Pictures/Wallpaper/<theme>/, see ~/.local/bin/theme), changing
+# every INTERVAL seconds. It never switches theme on its own — that's the
+# selector's and `theme set`/`theme next`'s job; this only follows along.
+# Re-reads the theme and re-scans its folder every cycle, so theme switches
+# and images added/removed later are picked up automatically.
+# SIGUSR1 (sent after a manual pick or a theme switch) restarts the timer
+# without changing the wallpaper, so that pick stays up a full interval.
 
-WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
+THEME="$HOME/.local/bin/theme"
 INTERVAL=900   # seconds between changes (15 minutes)
-
-# SDDM's sugar-candy theme shows this file as the login background; keep it in
-# sync with the wallpaper. Needs a one-time `sudo chown $USER` (see README) —
-# silently skipped otherwise. Qt loads by content, so non-jpg sources are fine.
-SDDM_BG="/usr/share/sddm/themes/sugar-candy/Backgrounds/current.jpg"
 
 # Single-instance guard via flock (avoids killing parent/wrapper shells).
 LOCK="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-cycle.lock"
@@ -41,17 +36,14 @@ trap 'skip_change=1' USR1
 
 last=""
 while true; do
-    # A manual pick just happened: keep it, restart the timer.
+    # A manual pick / theme switch just happened: keep it, restart the timer.
     if (( skip_change )); then
         skip_change=0
         snooze
         continue
     fi
 
-    # Collect top-level images only (no recursion into subfolders).
-    mapfile -t images < <(find -L "$WALLPAPER_DIR" -maxdepth 1 -type f \
-        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \
-           -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.bmp' \) | sort)
+    mapfile -t images < <("$THEME" images)
 
     count=${#images[@]}
     if (( count == 0 )); then
@@ -69,12 +61,8 @@ while true; do
         done
     fi
 
-    # Apply to every connected monitor (names fetched fresh each cycle).
-    while read -r mon; do
-        [ -n "$mon" ] && hyprctl hyprpaper wallpaper "$mon,$img" >/dev/null 2>&1
-    done < <(hyprctl monitors | awk '/^Monitor/{print $2}')
-
-    [ -w "$SDDM_BG" ] && cp -f "$img" "$SDDM_BG"
+    # Applies to every monitor and keeps the SDDM background in sync
+    "$THEME" wallpaper "$img"
 
     last="$img"
     snooze
