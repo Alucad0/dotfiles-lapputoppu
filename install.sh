@@ -65,28 +65,41 @@ for pkg in "${PACKAGES[@]}"; do
     done < <(find "$REPO/$pkg" -type f -print0)
 done
 
-# Links whose repo file was moved or renamed (e.g. wallpapers sorted into theme
-# folders) are left dangling by the loop above. Remove those — only symlinks
-# that point into this repo and resolve to nothing — from every directory a
-# linked file lives in, plus its parents up to $HOME.
-declare -A DIRS=()
+# Links whose repo file was moved, renamed or deleted are left dangling by the
+# loop above. Remove those — only symlinks that point into this repo and
+# resolve to nothing. Each package owns the tree two levels below $HOME that
+# its files live in (~/.config/hypr, ~/.local/bin, ~/Pictures/Wallpaper), and
+# that tree is searched recursively, so a link in a directory the repo no
+# longer has any files in (a deleted UserConfigs/, say) is found too. The
+# shallower directories (~, ~/.config) are shared with everything else, so
+# they're only searched one level deep.
+declare -A DEEP=() SHALLOW=([$HOME]=1)
 for pkg in "${PACKAGES[@]}"; do
     while IFS= read -r -d '' src; do
-        dir="$(dirname "$HOME/${src#"$REPO/$pkg/"}")"
-        while [ "$dir" != "$HOME" ] && [ "$dir" != / ]; do
-            DIRS[$dir]=1
-            dir="$(dirname "$dir")"
-        done
+        rel="$(dirname "${src#"$REPO/$pkg/"}")"
+        [ "$rel" = . ] && continue
+        IFS=/ read -ra part <<< "$rel"
+        SHALLOW[$HOME/${part[0]}]=1
+        (( ${#part[@]} >= 2 )) && DEEP[$HOME/${part[0]}/${part[1]}]=1
     done < <(find "$REPO/$pkg" -type f -print0)
 done
-for dir in "${!DIRS[@]}"; do
-    [ -d "$dir" ] || continue
+prune() {  # $1 = directory, rest = extra find args (e.g. -maxdepth 1)
+    local root=$1 link parent
+    shift
+    [ -d "$root" ] || return 0
     while IFS= read -r -d '' link; do
-        case "$(readlink "$link")" in
-            "$REPO"/*) run rm "$link"; echo "removed dangling: ~/${link#"$HOME/"}" ;;
-        esac
-    done < <(find "$dir" -maxdepth 1 -xtype l -print0)
-done
+        case "$(readlink "$link")" in "$REPO"/*) ;; *) continue ;; esac
+        run rm "$link"
+        echo "removed dangling: ~/${link#"$HOME/"}"
+        # and the directory it was in, if that emptied it (never the root)
+        parent="$(dirname "$link")"
+        if [ "$parent" != "$root" ]; then
+            run rmdir "$parent" 2>/dev/null || true
+        fi
+    done < <(find "$root" "$@" -xtype l -print0 2>/dev/null)
+}
+for dir in "${!DEEP[@]}";    do prune "$dir"; done
+for dir in "${!SHALLOW[@]}"; do prune "$dir" -maxdepth 1; done
 
 # oh-my-zsh + powerlevel10k are git clones, not packages. Cloned directly
 # rather than run through omz's install.sh, which would overwrite the ~/.zshrc
