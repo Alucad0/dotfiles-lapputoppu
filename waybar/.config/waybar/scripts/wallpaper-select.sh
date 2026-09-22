@@ -47,6 +47,7 @@ done < <(hyprctl monitors | awk '/^Monitor/{print $2}')
 
 [ -w "$SDDM_BG" ] && cp -f "$img" "$SDDM_BG"
 
-# restart the auto-cycle timer (no-op if the cycler isn't running)
-pkill -USR1 -f 'wallpaper-cycle\.sh' 2>/dev/null
+# restart the auto-cycle timer (no-op if the cycler isn't running); exact
+# command-line match so an editor with the script open doesn't get the USR1
+pkill -USR1 -fx '(/usr/bin/)?bash .*/wallpaper-cycle\.sh' 2>/dev/null
 exit 0
