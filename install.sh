@@ -6,7 +6,7 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
-ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures vscode fontconfig wofi gtk bin)
+ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures vscode fontconfig wofi gtk bin kde)
 
 PACKAGES=("${@:-${ALL_PACKAGES[@]}}")
 
