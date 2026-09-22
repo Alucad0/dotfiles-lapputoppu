@@ -124,10 +124,16 @@
         "tooltip": false
     },
     "bluetooth": {
-        "format-on": "<span size='12000' rise='-2000'>󰂯</span>",
-        "format-off": "<span size='12000' rise='-2000'>󰂲</span>",
-        "format-disabled": "<span size='12000' rise='-2000'>󰂲</span>",
-        "format-connected-battery": "<span size='12000' rise='-2000'>󰂯</span> {device_alias}",
+        // The Material bluetooth glyphs fill their whole em-box, so at the
+        // shared 12000 size they render ~21px tall vs 13-17px for the other
+        // icons; 9500 matches the round ones (sun, clock). The zero-width
+        // space at 12000 anchors the baseline — with the glyph alone in the
+        // label (the off state) GTK re-centers the box and `rise` does nothing
+        "format-on": "<span size='9500' rise='1000'>󰂯</span><span size='12000'>​</span>",
+        "format-off": "<span size='9500' rise='1000'>󰂲</span><span size='12000'>​</span>",
+        "format-disabled": "<span size='9500' rise='1000'>󰂲</span><span size='12000'>​</span>",
+        "format-connected": "<span size='9500' rise='1000'>󰂯</span><span size='12000'>​</span> {device_alias}",
+        "format-connected-battery": "<span size='9500' rise='1000'>󰂯</span><span size='12000'>​</span> {device_alias}",
         "format-no-controller": "",
         "tooltip-format": "{num_connections} connected",
         "tooltip-format-connected": "{num_connections} connected\n{device_enumerate}",
