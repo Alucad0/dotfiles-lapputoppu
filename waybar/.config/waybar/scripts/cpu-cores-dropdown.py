@@ -33,15 +33,32 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkLayerShell", "0.1")
 from gi.repository import Gtk, GLib, GtkLayerShell  # noqa: E402
 
-# Catppuccin Mocha
-BASE = (0x1E / 255, 0x1E / 255, 0x2E / 255)
-SURFACE1 = (0x45 / 255, 0x47 / 255, 0x5A / 255)
-SURFACE0 = (0x31 / 255, 0x32 / 255, 0x44 / 255)
-TEXT = (0xCD / 255, 0xD6 / 255, 0xF4 / 255)
-OVERLAY0 = (0x6C / 255, 0x70 / 255, 0x86 / 255)
-GREEN = (0xA6 / 255, 0xE3 / 255, 0xA1 / 255)
-PEACH = (0xFA / 255, 0xB3 / 255, 0x87 / 255)
-RED = (0xF3 / 255, 0x8B / 255, 0xA8 / 255)
+# Colours come from the active theme's palette — the same generated css waybar
+# imports (~/.local/bin/theme writes it), so the dropdown shares the bar's
+# undertone. Catppuccin Mocha is the fallback if the file is missing.
+PALETTE = {
+    "base": "1e1e2e", "surface1": "45475a", "surface0": "313244",
+    "text": "cdd6f4", "overlay0": "6c7086",
+    "green": "a6e3a1", "peach": "fab387", "red": "f38ba8",
+}
+try:
+    with open(os.path.expanduser("~/.config/waybar/theme.css")) as f:
+        for line in f:  # "@define-color name #rrggbb;" — later lines win
+            parts = line.split()
+            if len(parts) == 3 and parts[0] == "@define-color" and parts[2].startswith("#"):
+                PALETTE[parts[1]] = parts[2][1:7]
+except OSError:
+    pass
+
+
+def _rgb(name):
+    h = PALETTE[name]
+    return tuple(int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+
+
+BASE, SURFACE1, SURFACE0 = _rgb("base"), _rgb("surface1"), _rgb("surface0")
+TEXT, OVERLAY0 = _rgb("text"), _rgb("overlay0")
+GREEN, PEACH, RED = _rgb("green"), _rgb("peach"), _rgb("red")
 
 BAR_W = 16
 BAR_GAP = 7
