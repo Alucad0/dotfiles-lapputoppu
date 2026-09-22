@@ -1,14 +1,16 @@
 # dotfiles — lapputoppu
 
-The dotfiles for my riced Arch Linux setup. Catppuccin Mocha everywhere.
+The dotfiles for my riced Arch Linux setup. Catppuccin Mocha everywhere, in two
+dark themes that differ only in undertone — see [Themes](#themes).
 
 | | |
 |---|---|
-| WM | [Hyprland](https://hyprland.org/) + hyprpaper (wallpaper cycler in `hypr/scripts/`) |
+| WM | [Hyprland](https://hyprland.org/) + hyprpaper (theme-aware wallpaper cycler in `hypr/scripts/`) |
+| Themes | `theme` (`bin/`) + palettes in `themes/` — recolours waybar, wofi, the CPU dropdown and window borders, and picks the wallpaper pool |
 | Bar | [Waybar](https://github.com/Alexays/Waybar) — frosted islands, per-core CPU dropdown (`waybar/scripts/`) |
 | Terminal | kitty — Monokai Vibrant, deliberately: it matches the VS Code theme rather than the Mocha rest |
 | Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt) |
-| Launcher | wofi — Mocha-styled drun menu (`wofi/`) |
+| Launcher | wofi — drun menu; rules in `wofi/…/style.base.css`, the real `style.css` is generated per theme |
 | Login | [SDDM](https://github.com/sddm/sddm) + [sugar-candy](https://github.com/Kangie/sddm-sugar-candy) theme (`sddm/`, system config — see below) |
 | Editor | VS Code — settings in `vscode/`, extensions in `vscode-extensions.txt`, CodeNewRoman Nerd Font in editor + integrated terminal |
 | Qt/KDE apps | Breeze Dark via `kde/.config/kdeglobals`; Hyprland exports `QT_QPA_PLATFORMTHEME=kde` |
@@ -32,6 +34,45 @@ Exception: `sddm/` holds system config (files under `/etc` and `/usr/share`), so
 
 Configs use `$HOME` rather than absolute paths wherever the consumer runs them
 through a shell, so nothing here is tied to this username.
+
+## Themes
+
+Two themes, both dark — they differ in undertone and accent, never in
+brightness of the UI:
+
+| Theme | UI | Wallpapers (`~/Pictures/Wallpaper/<theme>/`) |
+|---|---|---|
+| `green` — Green · brighter | Mocha neutrals re-hued to forest green, green accent | admiration, deer, night, sunrise, sunset, walking |
+| `blue` — Blue · darker | Mocha neutrals re-hued to navy and 20% darker, blue accent | berserk, climber, galaxygirl, red_string, spongebob |
+
+A theme is `themes/.config/themes/<name>.theme` (a palette) plus the
+wallpaper folder of the same name. Switching:
+
+- **waybar wallpaper icon** — click opens the picker (current theme's
+  wallpapers first, then the others tagged `· <theme>`; picking one of those
+  switches theme); right-click goes to the next theme. The icon is tinted with
+  the accent and its tooltip names the theme.
+- **terminal** — `theme set blue`, `theme next`, `theme` (prints the current
+  one), `theme --help` for the rest.
+
+The cycler only rotates wallpapers *within* the current theme; it never
+switches theme by itself.
+
+What a switch touches: `~/.config/waybar/theme.css` (imported by waybar's
+`style.css`), `~/.config/wofi/style.css` (the palette + `style.base.css` — wofi
+loads css as a string, so it can't `@import`), Hyprland's borders (live via
+`hyprctl eval`; `hyprland.lua` also reads the theme so a config reload keeps
+them), and the saved choice in `~/.local/state/theme/current`. Those generated
+files are not in the repo; `install.sh` creates them via `theme apply`.
+
+Not themed: kitty (deliberately Monokai, see above), the GTK theme (fixed
+Catppuccin Mocha green — switching it live would mean restarting GTK apps),
+and the SDDM greeter, which just shows the current wallpaper.
+
+**Adding a theme**: copy a `.theme` file, change the colours, and create
+`~/Pictures/Wallpaper/<name>/`. **Adding a wallpaper**: put it in a theme's
+folder, then `./add-wallpaper.sh ~/Pictures/Wallpaper/<theme>/foo.jpg` to move
+it into the repo.
 
 ## Install (new machine)
 
@@ -72,9 +113,12 @@ Editing a linked file edits the repo copy: `git diff` in the repo shows your
 uncommitted tweaks, `git pull` updates both machines. That includes the prompt —
 `p10k configure` rewrites `~/.p10k.zsh`, which is `zsh/.p10k.zsh` here.
 
-`./add-wallpaper.sh ~/Pictures/Wallpaper/foo.jpg` promotes a new wallpaper into
-the `pictures` package and links it back, so hyprpaper and the cycler keep
-seeing it.
+`./add-wallpaper.sh ~/Pictures/Wallpaper/<theme>/foo.jpg` promotes a new
+wallpaper into the `pictures` package and links it back, so hyprpaper and the
+cycler keep seeing it.
+
+When a repo file is moved or renamed, `install.sh` also removes the links it
+left dangling (only symlinks that point into this repo).
 
 ## Manual bits not covered
 
