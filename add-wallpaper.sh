@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WP_HOME="$HOME/Pictures/Wallpaper"
-WP_REPO="$REPO/pictures/Wallpaper"
+WP_REPO="$REPO/pictures/Pictures/Wallpaper"
 
 for img in "$@"; do
     img="$(realpath -s "$img")"
