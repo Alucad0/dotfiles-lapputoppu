@@ -1,23 +1,98 @@
-# pacman -S --needed - < packages.txt
+# Official-repo packages. AUR ones live in packages-aur.txt (pacman can't see them).
+#   grep -vE '^\s*(#|$)' packages.txt | sudo pacman -S --needed -
+#
+# Grouped by what it's for. Everything installed explicitly on lapputoppu is
+# here, plus a few that are only pulled in as dependencies today but that the
+# configs in this repo call directly (playerctl, the cpu-dropdown python deps).
+
+# --- base system (pacstrap/archinstall puts these in; listed so the file is complete)
+base
+base-devel
+linux
+linux-firmware
+amd-ucode
+sudo
+nano
+make
+usbutils
+openssh
+openbsd-netcat
+perf
+zip
+unzip
+7zip
+tmux
+
+# --- Hyprland session
 hyprland
 hyprpaper
-xdg-desktop-portal-hyprland
+uwsm
 waybar
 kitty
 wofi
 sddm
-zsh
-git
-github-cli
-grim
-slurp
+xdg-desktop-portal-hyprland
+# the file-chooser/dark-mode backend the portals config prefers (see xdg/)
+xdg-desktop-portal-gtk
+xorg-xrandr
+awww
+
+# --- waybar module dependencies
+# playerctl: the spotify island + the XF86Audio media keys in hyprland.lua
+playerctl
+# python-gobject + gtk-layer-shell + python-pillow: cpu-cores-dropdown.py
 python-gobject
 gtk-layer-shell
 python-pillow
+# screenshare.sh / wallpaper-select.sh shell out to these
+grim
+slurp
+
+# --- audio, network, hardware
+pipewire
+pipewire-audio
+pipewire-pulse
+pipewire-jack
+wireplumber
 pavucontrol
-blueman
-brightnessctl
+networkmanager
+openconnect
 proton-vpn-gtk-app
+brightnessctl
+# bluez is the daemon (bluetooth.service); bluez-utils is bluetoothctl and
+# blueman-manager is the waybar right-click target — the module needs all three
+bluez
+bluez-utils
+blueman
+
+# --- theming and fonts
+# breeze + plasma-integration back QT_QPA_PLATFORMTHEME=kde / QT_STYLE_OVERRIDE=Breeze
+breeze
+plasma-integration
 otf-codenewroman-nerd
 noto-fonts-cjk
 noto-fonts-emoji
+
+# --- applications
+firefox
+dolphin
+gwenview
+dragon
+discord
+spotify-launcher
+audacity
+imagemagick
+gnuplot
+wireshark-qt
+
+# --- shell and dev tooling
+zsh
+git
+github-cli
+python-pip
+python-pipx
+python-yaml
+jdk-openjdk
+ocaml
+nasm
+podman

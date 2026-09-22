@@ -1,0 +1,10 @@
+# AUR packages — pacman can't install these, use an AUR helper:
+#   grep -vE '^\s*(#|$)' packages-aur.txt | yay -S --needed -
+# (yay itself is in the list; bootstrap it first by hand:
+#   git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si)
+yay
+waypaper
+visual-studio-code-bin
+python-pywal
+# python37: old interpreter kept around for coursework
+python37
