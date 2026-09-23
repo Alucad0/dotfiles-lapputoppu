@@ -210,6 +210,8 @@ tooltip label {
 #pulseaudio          { color: @sky; }
 #backlight           { color: @yellow; }
 #bluetooth           { color: @sapphire; }
+#bluetooth.off,
+#bluetooth.disabled  { color: @overlay0; }
 #network             { color: @blue; }
 #battery             { color: @green; }
 #clock               { color: @maroon; }
