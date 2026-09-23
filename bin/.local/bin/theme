@@ -9,7 +9,8 @@
 #   theme list            list the themes
 #   theme label [NAME]    display name of NAME (default: current)
 #   theme set NAME        switch to NAME and show one of its wallpapers
-#   theme next            switch to the next theme (waybar right-click)
+#   theme next            switch to the next theme and show one of its
+#                         wallpapers (waybar right-click)
 #   theme apply           re-apply the current palette without touching the
 #                         wallpaper (install.sh runs this to generate the css)
 #   theme images [NAME]   wallpapers of NAME (default: current), one per line
@@ -182,11 +183,15 @@ random_image() {
 
 switch_to() {
     local img
-    apply "$1"
+    # Wallpaper before palette: apply() ends in a SIGUSR2 waybar reload, and
+    # waybar kills a click command's process group when its modules are torn
+    # down — anything after that signal never runs when this was started from
+    # the bar's right-click.
     if img="$(random_image "$1")"; then
         set_wallpaper "$img"
         nudge_cycler
     fi
+    apply "$1"
 }
 
 cmd="${1:-current}"
@@ -209,8 +214,11 @@ case "$cmd" in
     wallpaper)
         img="${2:?usage: theme wallpaper IMG}"
         t="$(theme_of "$img")"
-        [ -n "$t" ] && [ "$t" != "$(current)" ] && apply "$t"
+        # same ordering as switch_to: apply's waybar reload may kill us, so
+        # the wallpaper and the cycler nudge come first
         set_wallpaper "$img"
+        nudge_cycler
+        [ -n "$t" ] && [ "$t" != "$(current)" ] && apply "$t"
         ;;
     waybar)
         load "$(current)"
@@ -219,6 +227,6 @@ case "$cmd" in
         printf '{"text":"<span size='\''12000'\'' rise='\''-2000'\''>󰋩</span>","tooltip":"Theme: %s\\nclick: pick a wallpaper\\nright-click: next theme","class":"%s"}\n' \
             "$label" "${T[name]}"
         ;;
-    -h|--help|help) sed -n '2,18p' "$0" | sed 's/^# \?//' ;;
+    -h|--help|help) sed -n '2,19p' "$0" | sed 's/^# \?//' ;;
     *) die "unknown command: $cmd (try: theme --help)" ;;
 esac

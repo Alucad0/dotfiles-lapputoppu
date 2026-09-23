@@ -50,8 +50,9 @@ wallpaper folder of the same name. Switching:
 
 - **waybar wallpaper icon** — click opens the picker (current theme's
   wallpapers first, then the others tagged `· <theme>`; picking one of those
-  switches theme); right-click goes to the next theme. The icon is tinted with
-  the accent and its tooltip names the theme.
+  switches theme); right-click switches to the next theme with a random
+  wallpaper from it. The icon is tinted with the accent and its tooltip names
+  the theme.
 - **terminal** — `theme set blue`, `theme next`, `theme` (prints the current
   one), `theme --help` for the rest.
 

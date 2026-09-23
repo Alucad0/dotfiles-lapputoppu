@@ -3,9 +3,8 @@
 # theme's wallpapers (~/Pictures/Wallpaper/<theme>/), the current theme's
 # first. Other themes' entries are tagged with their theme's name, and picking
 # one switches the whole desktop to that theme. The pick goes through
-# ~/.local/bin/theme (hyprpaper IPC + SDDM sync), then the cycler gets USR1 so
-# its auto-cycle timer restarts at a full interval without immediately
-# replacing the manual pick.
+# ~/.local/bin/theme (hyprpaper IPC + SDDM sync), which also restarts the
+# cycler's auto-cycle timer so it doesn't immediately replace the manual pick.
 
 THEME="$HOME/.local/bin/theme"
 current="$("$THEME")"
@@ -47,10 +46,6 @@ case "$choice" in
 esac
 [ -f "$img" ] || exit 1
 
-# switches theme first if the image lives in another theme's folder
+# switches theme too if the image lives in another theme's folder
 "$THEME" wallpaper "$img"
-
-# restart the auto-cycle timer (no-op if the cycler isn't running); exact
-# command-line match so an editor with the script open doesn't get the USR1
-pkill -USR1 -fx '(/usr/bin/)?bash .*/wallpaper-cycle\.sh' 2>/dev/null
 exit 0

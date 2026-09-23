@@ -62,6 +62,7 @@
         // wofi thumbnail picker over all themes; picking another theme's
         // wallpaper switches theme, and resets the cycler timer either way
         "on-click": "$HOME/.config/waybar/scripts/wallpaper-select.sh",
+        // next theme, with a random wallpaper from that theme
         "on-click-right": "$HOME/.local/bin/theme next"
     },
     "custom/archlogo": {
