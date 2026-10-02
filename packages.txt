@@ -65,6 +65,9 @@ networkmanager
 openconnect
 proton-vpn-gtk-app
 brightnessctl
+# performance/balanced/power-saver profiles — the waybar icon left of the
+# battery cycles them on click; system service, see the README
+power-profiles-daemon
 # bluez is the daemon (bluetooth.service); bluez-utils is bluetoothctl and
 # blueman-manager is the waybar right-click target — the module needs all three
 bluez

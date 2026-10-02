@@ -100,8 +100,9 @@ cd dotfiles-lapputoppu
 ./install.sh -n              # ...or dry-run it first
 ./install.sh waybar zsh      # ...or just some packages
 
-# 4. services
-sudo systemctl enable --now NetworkManager bluetooth sddm
+# 4. services (fstrim: weekly SSD trim; power-profiles-daemon backs the
+#    waybar power icon)
+sudo systemctl enable --now NetworkManager bluetooth sddm power-profiles-daemon fstrim.timer
 systemctl --user enable --now wireplumber hyprpolkitagent
 
 # 5. make zsh the login shell
