@@ -143,11 +143,10 @@ if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
 fi
 
 # waybar @imports a generated theme.css, wofi reads a generated style.css,
-# kitty includes a generated theme.conf, zsh sources a generated
-# p10k-theme.zsh and nano's whole nanorc is generated (colours +
-# nanorc.base); none exists until the theme script has run once (waybar then
-# logs an import error, the others come up unstyled).
-if [[ " ${PACKAGES[*]} " =~ \ (themes|waybar|wofi|kitty|zsh|nano)\  ]]; then
+# zsh sources a generated p10k-theme.zsh and nano's whole nanorc is generated
+# (colours + nanorc.base); none exists until the theme script has run once
+# (waybar then logs an import error, the others come up unstyled).
+if [[ " ${PACKAGES[*]} " =~ \ (themes|waybar|wofi|zsh|nano)\  ]]; then
     if [ -x "$HOME/.local/bin/theme" ] || (( DRY_RUN )); then
         echo "generating theme palette"
         run "$HOME/.local/bin/theme" apply
