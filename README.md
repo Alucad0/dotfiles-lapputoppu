@@ -8,7 +8,7 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | WM | [Hyprland](https://hyprland.org/) + hyprpaper (theme-aware wallpaper cycler in `hypr/scripts/`) |
 | Themes | `theme` (`bin/`) + palettes in `themes/` — recolours waybar, wofi, the CPU dropdown and window borders, and picks the wallpaper pool |
 | Bar | [Waybar](https://github.com/Alexays/Waybar) — frosted islands, per-core CPU dropdown (`waybar/scripts/`) |
-| Terminal | kitty — Monokai Vibrant, deliberately: it matches the VS Code theme rather than the Mocha rest; the p10k prompt inside it does carry the theme accent |
+| Terminal | kitty — static Catppuccin Mocha (plain upstream neutrals, no undertone re-hue; theme switches don't touch it); the p10k prompt inside it carries the accent |
 | Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt; the dir segment and prompt char take the theme accent via a generated overlay) |
 | Launcher | wofi — drun menu; rules in `wofi/…/style.base.css`, the real `style.css` is generated per theme |
 | Login | [SDDM](https://github.com/sddm/sddm) + [sugar-candy](https://github.com/Kangie/sddm-sugar-candy) theme (`sddm/`, system config — see below) |
@@ -73,9 +73,10 @@ nanos pick it up), Hyprland's borders (live via `hyprctl eval`;
 saved choice in `~/.local/state/theme/current`. Those generated files are not
 in the repo; `install.sh` creates them via `theme apply`.
 
-Not themed: kitty and VS Code (both Monokai Vibrant, see above), the GTK theme
-(fixed Catppuccin Mocha green — switching it live would mean restarting GTK
-apps), and the SDDM greeter, which just shows the current wallpaper.
+Not themed: kitty (static Mocha, see above), VS Code (Monokai Vibrant), the
+GTK theme (fixed Catppuccin Mocha green — switching it live would mean
+restarting GTK apps), and the SDDM greeter, which just shows the current
+wallpaper.
 
 **Adding a theme**: copy a `.theme` file, change the colours, and create
 `~/Pictures/Wallpaper/<name>/`. **Adding a wallpaper**: put it in a theme's
