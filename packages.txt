@@ -39,6 +39,9 @@ awww
 # clipboard: wl-copy/wl-paste + the history behind the SUPER+H wofi picker
 wl-clipboard
 cliphist
+# polkit agent so GUI apps can raise auth prompts (Qt, rides the Breeze
+# theming) — a user service, see the systemctl step in the README
+hyprpolkitagent
 
 # --- waybar module dependencies
 # playerctl: the spotify island + the XF86Audio media keys in hyprland.lua

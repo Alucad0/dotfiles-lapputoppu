@@ -102,7 +102,7 @@ cd dotfiles-lapputoppu
 
 # 4. services
 sudo systemctl enable --now NetworkManager bluetooth sddm
-systemctl --user enable --now wireplumber
+systemctl --user enable --now wireplumber hyprpolkitagent
 
 # 5. make zsh the login shell
 chsh -s /bin/zsh
