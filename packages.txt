@@ -82,6 +82,12 @@ otf-codenewroman-nerd
 noto-fonts-cjk
 noto-fonts-emoji
 
+# --- maintenance (set-and-forget timers; enabling them is in the README)
+# paccache.timer prunes the pacman cache to the last 3 versions per package
+pacman-contrib
+# reflector.timer refreshes the mirrorlist weekly — config in reflector/
+reflector
+
 # --- applications
 firefox
 dolphin

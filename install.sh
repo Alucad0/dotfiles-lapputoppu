@@ -36,10 +36,10 @@ run() {
 }
 
 for pkg in "${PACKAGES[@]}"; do
-    if [ "$pkg" = sddm ]; then
-        echo "!! sddm is system config, not a \$HOME package — see README (sudo cp)" >&2
+    case "$pkg" in sddm|reflector)
+        echo "!! $pkg is system config, not a \$HOME package — see README (sudo cp)" >&2
         exit 1
-    fi
+    esac
     if [ ! -d "$REPO/$pkg" ]; then
         echo "!! unknown package: $pkg (available: ${ALL_PACKAGES[*]})" >&2
         exit 1
