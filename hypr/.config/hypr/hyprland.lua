@@ -42,6 +42,9 @@ local browser     = "firefox"
 hl.on("hyprland.start", function()
     hl.exec_cmd("waybar & hyprpaper & firefox")
     hl.exec_cmd("~/.config/hypr/scripts/wallpaper-cycle.sh")
+    -- feed cliphist (the SUPER+H picker); text and images are separate watchers
+    hl.exec_cmd("wl-paste --type text --watch cliphist store")
+    hl.exec_cmd("wl-paste --type image --watch cliphist store")
 end)
 
 
@@ -326,6 +329,9 @@ hl.bind(mainMod .. " + M", hl.dsp.exit()) -- goto Hyprland exit menu
 -- Screenshot bindings
 -- hl.bind("Print", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.local/bin/snapshot"))
+
+-- Clipboard history (H as in history; V is taken by the float toggle)
+hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard-history.sh"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))

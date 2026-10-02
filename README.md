@@ -17,6 +17,7 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | Qt/KDE apps | Breeze Dark via `kde/.config/kdeglobals`; Hyprland exports `QT_QPA_PLATFORMTHEME=kde` |
 | Portals | `xdg/` pins the xdg-desktop-portal backends — hyprland for screencast, GTK for file dialogs and dark mode |
 | Screenshots | `bin/.local/bin/{snapshot,screenshot}` — full screen (SUPER+P) and drag-to-select |
+| Clipboard | wl-clipboard + cliphist — SUPER+H opens the history in a wofi dmenu (`hypr/scripts/clipboard-history.sh`) |
 | Claude Code | ccstatusline status line + settings |
 | Fonts | CodeNewRoman [Nerd Font](https://www.nerdfonts.com/cheat-sheet) for icons, Noto CJK + Color Emoji for Japanese/emoji — `fontconfig/` prefers the JP glyph variants and adds emoji fallback |
 
@@ -167,7 +168,3 @@ Deliberately not set up yet, listed so they don't get rediscovered as bugs:
   Fix by installing `mako` or `swaync` and autostarting it in `hyprland.lua`.
 - **No lock screen or idle handling** (`hyprlock` / `hypridle`) — the laptop
   never locks on lid close or idle, and never suspends on idle.
-- **No clipboard tooling** — `wl-clipboard` isn't installed, so there's no
-  `wl-copy` and no `cliphist` history.
-- **No polkit agent** (`hyprpolkitagent`), so GUI apps can't raise an auth
-  prompt (mounting a drive from Dolphin, for instance).

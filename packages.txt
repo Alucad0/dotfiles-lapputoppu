@@ -36,6 +36,9 @@ xdg-desktop-portal-hyprland
 xdg-desktop-portal-gtk
 xorg-xrandr
 awww
+# clipboard: wl-copy/wl-paste + the history behind the SUPER+H wofi picker
+wl-clipboard
+cliphist
 
 # --- waybar module dependencies
 # playerctl: the spotify island + the XF86Audio media keys in hyprland.lua
