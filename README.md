@@ -16,7 +16,7 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | CLI editor | nano — syntax highlighting + interface colours from the theme; the whole `nanorc` is generated (colours + `nano/…/nanorc.base`) |
 | Qt/KDE apps | Breeze Dark via `kde/.config/kdeglobals`; Hyprland exports `QT_QPA_PLATFORMTHEME=kde` |
 | Portals | `xdg/` pins the xdg-desktop-portal backends — hyprland for screencast, GTK for file dialogs and dark mode |
-| Screenshots | `bin/.local/bin/{snapshot,screenshot}` — full screen (SUPER+P) and drag-to-select |
+| Screenshots | `bin/.local/bin/{snapshot,screenshot}` — full screen (SUPER+P) and drag-to-select (PrtSc, accent-coloured slurp border); both also copy the image to the clipboard |
 | Clipboard | wl-clipboard + cliphist — SUPER+H opens the history in a wofi dmenu (`hypr/scripts/clipboard-history.sh`) |
 | Claude Code | ccstatusline status line + settings |
 | Fonts | CodeNewRoman [Nerd Font](https://www.nerdfonts.com/cheat-sheet) for icons, Noto CJK + Color Emoji for Japanese/emoji — `fontconfig/` prefers the JP glyph variants and adds emoji fallback |

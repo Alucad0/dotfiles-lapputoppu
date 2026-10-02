@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
-# Interactive screenshot: drag a region with slurp, save it with grim
+# Interactive screenshot (PrtSc): drag a region with slurp — dimmed backdrop,
+# accent-coloured border, live dimensions — then grim saves it and wl-copy
+# puts the image on the clipboard (cliphist keeps it in the SUPER+H history).
+# Escape in slurp cancels cleanly instead of grabbing an empty geometry.
 set -euo pipefail
 out="$HOME/Pictures/screenshots"
 mkdir -p "$out"
-grim -g "$(slurp)" "$out/screenshot_$(date +%Y%m%d_%H%M%S).png"
+
+# selection border in the active theme's accent (fallback: the green accent)
+name="$(cat "$HOME/.local/state/theme/current" 2>/dev/null || true)"
+accent="$(sed -n 's/^accent=//p' "$HOME/.config/themes/${name:-none}.theme" 2>/dev/null || true)"
+: "${accent:=a6e3a1}"
+
+geom="$(slurp -d -w 2 -b '#11111b66' -c "#${accent}ee" -s '#00000000')" || exit 0
+file="$out/screenshot_$(date +%Y%m%d_%H%M%S).png"
+grim -g "$geom" "$file"
+wl-copy --type image/png < "$file"

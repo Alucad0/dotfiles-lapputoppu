@@ -326,8 +326,8 @@ hl.bind(mainMod .. " + M", hl.dsp.exit()) -- goto Hyprland exit menu
 -- hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())       -- reverts to OG window size
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- switch between vertical/horizontal split in dwindle
 
--- Screenshot bindings
--- hl.bind("Print", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
+-- Screenshot bindings: PrtSc drags a region, SUPER+P grabs the full screen
+hl.bind("Print", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.local/bin/snapshot"))
 
 -- Clipboard history (H as in history; V is taken by the float toggle)
