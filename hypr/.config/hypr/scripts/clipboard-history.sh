@@ -5,7 +5,11 @@
 # The watchers that feed cliphist are started in hyprland.lua.
 set -euo pipefail
 
-sel="$(cliphist list | wofi --dmenu --prompt clipboard \
-    --width 640 --height 480 --insensitive --cache-file /dev/null)"
+# long entries get an ellipsis — wofi can't truncate labels itself; cliphist
+# decode only needs the id prefix, so cutting the preview text is safe
+sel="$(cliphist list \
+    | awk -v max=80 '{ if (length($0) > max) print substr($0, 1, max) "…"; else print }' \
+    | wofi --dmenu --prompt clipboard \
+        --width 640 --height 480 --insensitive --cache-file /dev/null)"
 [ -n "$sel" ] || exit 0
 printf '%s\n' "$sel" | cliphist decode | wl-copy
