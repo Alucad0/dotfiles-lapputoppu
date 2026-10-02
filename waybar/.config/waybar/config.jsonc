@@ -172,13 +172,13 @@
     // Built-in module; clicking cycles performance / balanced / power-saver.
     // Hidden (with a log line) until power-profiles-daemon is running.
     "power-profiles-daemon": {
-        "format": "<span size='12000' rise='-2000'>{icon}</span>",
+        "format": "<span size='9500' rise='1000'>{icon}</span><span size='12000'>​</span>",
         "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
         "format-icons": {
-            "default": "",
-            "performance": "",
-            "balanced": "",
-            "power-saver": ""
+            "default": "󰗑",
+            "performance": "󱐋",
+            "balanced": "󰗑",
+            "power-saver": "󰌪"
         }
     },
     "battery": {
