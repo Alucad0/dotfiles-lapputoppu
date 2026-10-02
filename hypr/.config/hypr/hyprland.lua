@@ -372,6 +372,12 @@ hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh up"),        { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh down"),      { locked = true, repeating = true })
 
+-- Airplane mode on the airplane key (F9): every radio off/on via rfkill,
+-- mirrored by the waybar wifi module. The display key (F7) pops the same
+-- mirror/extend menu as the waybar screenshare icon (silent without a cable).
+hl.bind("XF86RFKill",  hl.dsp.exec_cmd("~/.config/hypr/scripts/airplane-mode.sh"), { locked = true })
+hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh menu"))
+
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })

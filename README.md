@@ -18,6 +18,7 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | Portals | `xdg/` pins the xdg-desktop-portal backends — hyprland for screencast, GTK for file dialogs and dark mode |
 | Screenshots | `bin/.local/bin/{snapshot,screenshot}` — full screen (SUPER+P) and drag-to-select (PrtSc, accent-coloured slurp border); both also copy the image to the clipboard |
 | Clipboard | wl-clipboard + cliphist — SUPER+H opens the history in a wofi dmenu (`hypr/scripts/clipboard-history.sh`) |
+| Airplane mode | the F9 airplane key (or right-click the wifi module) rfkill-blocks every radio; the wifi module (`waybar/scripts/network.sh`) flips to a dimmed ✈ "airplane mode". The F7 display key pops the same mirror/extend menu as the screenshare icon |
 | Claude Code | ccstatusline status line + settings |
 | Fonts | CodeNewRoman [Nerd Font](https://www.nerdfonts.com/cheat-sheet) for icons, Noto CJK + Color Emoji for Japanese/emoji — `fontconfig/` prefers the JP glyph variants and adds emoji fallback |
 

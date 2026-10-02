@@ -110,7 +110,7 @@ tooltip label {
 #pulseaudio,
 #backlight,
 #bluetooth,
-#network,
+#custom-network,
 #power-profiles-daemon,
 #battery,
 #clock {
@@ -134,7 +134,7 @@ tooltip label {
 #pulseaudio:hover,
 #backlight:hover,
 #bluetooth:hover,
-#network:hover,
+#custom-network:hover,
 #power-profiles-daemon:hover,
 #battery:hover,
 #clock:hover {
@@ -214,7 +214,9 @@ tooltip label {
 #bluetooth           { color: @sapphire; }
 #bluetooth.off,
 #bluetooth.disabled  { color: @overlay0; }
-#network             { color: @blue; }
+#custom-network      { color: @blue; }
+#custom-network.airplane,
+#custom-network.disconnected { color: @overlay1; }
 #power-profiles-daemon { color: @teal; }
 #battery             { color: @green; }
 #clock               { color: @maroon; }
