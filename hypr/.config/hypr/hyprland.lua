@@ -372,10 +372,14 @@ hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh up"),        { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh down"),      { locked = true, repeating = true })
 
--- Airplane mode on the airplane key (F9): every radio off/on via rfkill,
--- mirrored by the waybar wifi module. The display key (F7) pops the same
--- mirror/extend menu as the waybar screenshare icon (silent without a cable).
-hl.bind("XF86RFKill",  hl.dsp.exec_cmd("~/.config/hypr/scripts/airplane-mode.sh"), { locked = true })
+-- The airplane key (F9) is NOT bound: the laptop firmware toggles the wifi
+-- rfkill by itself, and a bind on XF86RFKill just fights it — the two
+-- toggles cancel out (journal: "disabled by radio killswitch" + our
+-- "unblock set for all" within the same press). The waybar wifi module
+-- polls rfkill and flips to "airplane mode"; right-clicking it runs
+-- airplane-mode.sh, the software toggle that also covers bluetooth.
+-- The display key (F7) pops the same mirror/extend menu as the waybar
+-- screenshare icon (silent without a cable).
 hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh menu"))
 
 -- Requires playerctl

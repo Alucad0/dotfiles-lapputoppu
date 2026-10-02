@@ -12,7 +12,9 @@ json() { # text alt tooltip   (alt doubles as the css class)
         "$t" "$2" "$2" "$tip"
 }
 
-if rfkill list wifi 2>/dev/null | grep -q 'Soft blocked: yes'; then
+# any wifi block counts: the airplane key soft-blocks via firmware, and a
+# hard block (some firmwares use one) can't be cleared from software anyway
+if rfkill list wifi 2>/dev/null | grep -q 'blocked: yes'; then
     json "airplane mode" airplane "Radios off — the airplane key or right-click turns them back on"
     exit 0
 fi
