@@ -13,7 +13,7 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures
-              vscode fontconfig wofi gtk bin kde xdg themes)
+              vscode fontconfig wofi gtk bin kde xdg themes nano)
 
 DRY_RUN=0
 ARGS=()

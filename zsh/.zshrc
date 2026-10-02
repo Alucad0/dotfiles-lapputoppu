@@ -15,6 +15,21 @@ source $ZSH/oh-my-zsh.sh
 # repo's zsh/.p10k.zsh — so reconfiguring the prompt shows up in `git diff`.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Prompt accent follows the desktop theme: ~/.local/bin/theme generates this
+# overlay (not in the repo — run `theme apply` if it's missing) and the hook
+# re-sources it when the saved theme changes, so open shells recolour on
+# their next prompt.
+[[ ! -f ~/.config/zsh/p10k-theme.zsh ]] || source ~/.config/zsh/p10k-theme.zsh
+_theme_prompt_precmd() {
+  local cur state=~/.local/state/theme/current
+  [[ -r $state ]] || return 0
+  IFS= read -r cur < $state
+  [[ $cur == ${_THEME_PROMPT_CURRENT-} || ! -f ~/.config/zsh/p10k-theme.zsh ]] && return 0
+  source ~/.config/zsh/p10k-theme.zsh
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _theme_prompt_precmd
+
 # pipx shims + the scripts in the `bin` package (snapshot, screenshot)
 export PATH="$HOME/.local/bin:$PATH"
 

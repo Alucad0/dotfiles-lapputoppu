@@ -11,7 +11,7 @@ set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 ALL_PACKAGES=(hypr waybar kitty ccstatusline waypaper zsh git claude pictures
-              vscode fontconfig wofi gtk bin kde xdg themes)
+              vscode fontconfig wofi gtk bin kde xdg themes nano)
 
 DRY_RUN=0
 ARGS=()
@@ -142,10 +142,12 @@ if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
     fi
 fi
 
-# waybar @imports a generated theme.css and wofi reads a generated style.css;
-# neither exists until the theme script has run once (waybar then logs an
-# import error, wofi comes up unstyled).
-if [[ " ${PACKAGES[*]} " =~ \ (themes|waybar|wofi)\  ]]; then
+# waybar @imports a generated theme.css, wofi reads a generated style.css,
+# kitty includes a generated theme.conf, zsh sources a generated
+# p10k-theme.zsh and nano's whole nanorc is generated (colours +
+# nanorc.base); none exists until the theme script has run once (waybar then
+# logs an import error, the others come up unstyled).
+if [[ " ${PACKAGES[*]} " =~ \ (themes|waybar|wofi|kitty|zsh|nano)\  ]]; then
     if [ -x "$HOME/.local/bin/theme" ] || (( DRY_RUN )); then
         echo "generating theme palette"
         run "$HOME/.local/bin/theme" apply

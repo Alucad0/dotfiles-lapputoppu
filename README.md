@@ -8,11 +8,12 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | WM | [Hyprland](https://hyprland.org/) + hyprpaper (theme-aware wallpaper cycler in `hypr/scripts/`) |
 | Themes | `theme` (`bin/`) + palettes in `themes/` — recolours waybar, wofi, the CPU dropdown and window borders, and picks the wallpaper pool |
 | Bar | [Waybar](https://github.com/Alexays/Waybar) — frosted islands, per-core CPU dropdown (`waybar/scripts/`) |
-| Terminal | kitty — Monokai Vibrant, deliberately: it matches the VS Code theme rather than the Mocha rest |
-| Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt) |
+| Terminal | kitty — themed like the rest (generated `theme.conf`, live-reloaded on switch), CodeNewRoman Nerd Font |
+| Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt; the dir segment and prompt char take the theme accent via a generated overlay) |
 | Launcher | wofi — drun menu; rules in `wofi/…/style.base.css`, the real `style.css` is generated per theme |
 | Login | [SDDM](https://github.com/sddm/sddm) + [sugar-candy](https://github.com/Kangie/sddm-sugar-candy) theme (`sddm/`, system config — see below) |
 | Editor | VS Code — settings in `vscode/`, extensions in `vscode-extensions.txt`, CodeNewRoman Nerd Font in editor + integrated terminal |
+| CLI editor | nano — syntax highlighting + interface colours from the theme; the whole `nanorc` is generated (colours + `nano/…/nanorc.base`) |
 | Qt/KDE apps | Breeze Dark via `kde/.config/kdeglobals`; Hyprland exports `QT_QPA_PLATFORMTHEME=kde` |
 | Portals | `xdg/` pins the xdg-desktop-portal backends — hyprland for screencast, GTK for file dialogs and dark mode |
 | Screenshots | `bin/.local/bin/{snapshot,screenshot}` — full screen (SUPER+P) and drag-to-select |
@@ -61,14 +62,20 @@ switches theme by itself.
 
 What a switch touches: `~/.config/waybar/theme.css` (imported by waybar's
 `style.css`), `~/.config/wofi/style.css` (the palette + `style.base.css` — wofi
-loads css as a string, so it can't `@import`), Hyprland's borders (live via
-`hyprctl eval`; `hyprland.lua` also reads the theme so a config reload keeps
-them), and the saved choice in `~/.local/state/theme/current`. Those generated
-files are not in the repo; `install.sh` creates them via `theme apply`.
+loads css as a string, so it can't `@import`), `~/.config/kitty/theme.conf`
+(included by `kitty.conf`; running kitties reload via SIGUSR1),
+`~/.config/zsh/p10k-theme.zsh` (p10k accent overlay; open shells re-source it
+from a precmd hook in `.zshrc` on their next prompt),
+`~/.config/nano/nanorc` (interface colours + `nanorc.base` — nano's `include`
+only takes syntax files, so like wofi it gets a complete generated config; new
+nanos pick it up), Hyprland's borders (live via `hyprctl eval`;
+`hyprland.lua` also reads the theme so a config reload keeps them), and the
+saved choice in `~/.local/state/theme/current`. Those generated files are not
+in the repo; `install.sh` creates them via `theme apply`.
 
-Not themed: kitty (deliberately Monokai, see above), the GTK theme (fixed
-Catppuccin Mocha green — switching it live would mean restarting GTK apps),
-and the SDDM greeter, which just shows the current wallpaper.
+Not themed: VS Code (Monokai Vibrant), the GTK theme (fixed Catppuccin Mocha
+green — switching it live would mean restarting GTK apps), and the SDDM
+greeter, which just shows the current wallpaper.
 
 **Adding a theme**: copy a `.theme` file, change the colours, and create
 `~/Pictures/Wallpaper/<name>/`. **Adding a wallpaper**: put it in a theme's
