@@ -326,9 +326,13 @@ hl.bind(mainMod .. " + M", hl.dsp.exit()) -- goto Hyprland exit menu
 -- hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())       -- reverts to OG window size
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- switch between vertical/horizontal split in dwindle
 
--- Screenshot bindings: PrtSc drags a region, SUPER+P grabs the full screen
-hl.bind("Print", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
-hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.local/bin/snapshot"))
+-- Screenshot bindings: the PrtSc key drags a region, SUPER+P grabs the full
+-- screen. This laptop's PrtSc key doesn't send Print — it sends the Windows
+-- snip combo SUPER+SHIFT+S (which is why the scratchpad move sits on ALT);
+-- the plain Print bind stays for keyboards that do send it.
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
+hl.bind("Print",                   hl.dsp.exec_cmd("~/.local/bin/screenshot"))
+hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("~/.local/bin/snapshot"))
 
 -- Clipboard history (H as in history; V is taken by the float toggle)
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard-history.sh"))
@@ -347,9 +351,10 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+-- Special workspace (scratchpad): SUPER+S toggles it; the move-to bind sits
+-- on ALT because SUPER+SHIFT+S is the screenshot key (see below)
+hl.bind(mainMod .. " + S",       hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + ALT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
