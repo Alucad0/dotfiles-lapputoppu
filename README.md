@@ -9,7 +9,7 @@ dark themes that differ only in undertone — see [Themes](#themes).
 | Themes | `theme` (`bin/`) + palettes in `themes/` — recolours waybar, wofi, the CPU dropdown and window borders, and picks the wallpaper pool |
 | Bar | [Waybar](https://github.com/Alexays/Waybar) — frosted islands, per-core CPU dropdown (`waybar/scripts/`) |
 | Terminal | kitty — static Catppuccin Mocha (plain upstream neutrals, no undertone re-hue; theme switches don't touch it); the p10k prompt inside it carries the accent |
-| Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt; the dir segment and prompt char take the theme accent via a generated overlay) |
+| Shell | zsh + oh-my-zsh + powerlevel10k (`zsh/.p10k.zsh` is the prompt; the dir segment and prompt char take the theme accent via a generated overlay) + autosuggestions and syntax-highlighting (cloned by `install.sh`) |
 | Launcher | wofi — drun menu; rules in `wofi/…/style.base.css`, the real `style.css` is generated per theme |
 | Login | [SDDM](https://github.com/sddm/sddm) + [sugar-candy](https://github.com/Kangie/sddm-sugar-candy) theme (`sddm/`, system config — see below) |
 | Editor | VS Code — settings in `vscode/`, extensions in `vscode-extensions.txt`, CodeNewRoman Nerd Font in editor + integrated terminal |

@@ -8,7 +8,9 @@ fi
 # fetches them when the zsh package is linked (see README)
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git)
+# autosuggestions = ghost-text from history (→ accepts), syntax-highlighting
+# colours the command line as you type — it must stay last in the list
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # Prompt appearance. `p10k configure` rewrites ~/.p10k.zsh, which is this

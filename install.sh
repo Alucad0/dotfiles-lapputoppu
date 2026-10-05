@@ -115,6 +115,14 @@ if [[ " ${PACKAGES[*]} " == *" zsh "* ]]; then
         echo "cloning powerlevel10k"
         run git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K"
     fi
+    # history ghost-text + live command colouring (enabled in .zshrc plugins)
+    for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+        if [ ! -d "$OMZ/custom/plugins/$plugin" ]; then
+            echo "cloning $plugin"
+            run git clone --depth=1 "https://github.com/zsh-users/$plugin.git" \
+                "$OMZ/custom/plugins/$plugin"
+        fi
+    done
 fi
 
 # GTK theme (Catppuccin Mocha, green accent) — downloaded into ~/.themes, not vendored here
