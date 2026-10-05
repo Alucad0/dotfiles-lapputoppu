@@ -210,6 +210,8 @@ tooltip label {
 #cpu                 { color: @peach; }
 #memory              { color: @mauve; }
 #pulseaudio          { color: @sky; }
+#pulseaudio.source   { color: @flamingo; }
+#pulseaudio.source.source-muted { color: @overlay1; }
 #backlight           { color: @yellow; }
 #bluetooth           { color: @sapphire; }
 #bluetooth.off,
