@@ -32,6 +32,9 @@ kitty
 wofi
 sddm
 xdg-desktop-portal-hyprland
+# idle dim + screen-off (no lock, no suspend) — config in hypr/, runs as the
+# hypridle user service, see the README
+hypridle
 # the file-chooser/dark-mode backend the portals config prefers (see xdg/)
 xdg-desktop-portal-gtk
 xorg-xrandr
