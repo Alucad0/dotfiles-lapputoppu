@@ -407,8 +407,10 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- Example windowrule
 -- hl.window_rule({ match = { class = "^(kitty)$", title = "^(kitty)$" }, float = true })
 
--- Ignore maximize requests from apps. You'll probably like this.
--- hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
+-- Ignore maximize requests from apps — kitty ≥0.49 asks to be maximized on
+-- spawn (remember_window_size can't restore a size on Wayland), which covered
+-- the whole workspace instead of tiling.
+hl.window_rule({ match = { class = ".*" }, suppress_event = "maximize" })
 
 -- Fix some dragging issues with XWayland
 -- hl.window_rule({
