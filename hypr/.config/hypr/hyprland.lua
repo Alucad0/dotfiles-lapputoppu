@@ -326,13 +326,15 @@ hl.bind(mainMod .. " + M", hl.dsp.exit()) -- goto Hyprland exit menu
 -- hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())       -- reverts to OG window size
 -- hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- switch between vertical/horizontal split in dwindle
 
--- Screenshot bindings: the PrtSc key drags a region, SUPER+P grabs the full
--- screen. This laptop's PrtSc key doesn't send Print — it sends the Windows
--- snip combo SUPER+SHIFT+S (which is why the scratchpad move sits on ALT);
--- the plain Print bind stays for keyboards that do send it.
+-- Screenshot bindings: the PrtSc key drags a region, SUPER+SHIFT+P grabs the
+-- full screen. This laptop's PrtSc key doesn't send Print — it sends the
+-- Windows snip combo SUPER+SHIFT+S (which is why the scratchpad move sits on
+-- ALT); the plain Print bind stays for keyboards that do send it. SUPER+P is
+-- off limits for screenshots: the F7 display key sends the Windows project
+-- combo SUPER+P (see the display-cycle bind below).
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("~/.local/bin/screenshot"))
 hl.bind("Print",                   hl.dsp.exec_cmd("~/.local/bin/screenshot"))
-hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("~/.local/bin/snapshot"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("~/.local/bin/snapshot"))
 
 -- Clipboard history (H as in history; V is taken by the float toggle)
 hl.bind(mainMod .. " + H", hl.dsp.exec_cmd("~/.config/hypr/scripts/clipboard-history.sh"))
@@ -391,9 +393,13 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightn
 -- airplane-mode.sh, the software toggle that also covers bluetooth.
 -- The display key (F7) cycles mirror / extend right / external off,
 -- Win+P style, in a self-closing OSD (a "no display connected" notice
--- without a cable). The waybar screenshare icon keeps the full menu
--- with all the extend directions.
-hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh cycle"))
+-- without a cable). Like PrtSc, the key doesn't send its own keysym —
+-- libinput shows it sends the Windows project combo SUPER+P, so that's
+-- the real bind; XF86Display stays for keyboards that send it. The
+-- waybar screenshare icon keeps the full menu with all the extend
+-- directions.
+hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh cycle"))
+hl.bind("XF86Display",     hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh cycle"))
 
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
