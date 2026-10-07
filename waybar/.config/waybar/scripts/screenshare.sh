@@ -5,6 +5,8 @@
 #   screenshare.sh        -> status JSON (prints nothing when unplugged,
 #                            which hides the module)
 #   screenshare.sh menu   -> wofi picker: mirror / extend / external off
+#                            (without a cable: a "no display" wofi notice,
+#                            so the F7 display key always responds)
 set -uo pipefail
 
 INTERNAL="eDP-1"
@@ -41,7 +43,13 @@ external() {
 }
 
 if [ "${1:-status}" = "menu" ]; then
-    ext="$(external)" || exit 0
+    # No cable: the F7 key still gets visible feedback — a wofi notice instead
+    # of the layout menu (the options would have no display to act on)
+    if ! ext="$(external)"; then
+        printf '%s\n' "󰶐  No external display connected" \
+            | wofi --dmenu --prompt "Screen sharing" --lines 2 >/dev/null
+        exit 0
+    fi
     choice="$(printf '%s\n' \
         "󰍺  Mirror laptop screen" \
         "󰞔  Extend right" \

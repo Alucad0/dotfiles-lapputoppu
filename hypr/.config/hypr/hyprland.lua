@@ -390,7 +390,7 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightn
 -- polls rfkill and flips to "airplane mode"; right-clicking it runs
 -- airplane-mode.sh, the software toggle that also covers bluetooth.
 -- The display key (F7) pops the same mirror/extend menu as the waybar
--- screenshare icon (silent without a cable).
+-- screenshare icon (a "no display connected" notice without a cable).
 hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh menu"))
 
 -- Requires playerctl
