@@ -108,7 +108,7 @@ cd dotfiles-lapputoppu
 #    refreshes the mirrorlist — copy its config first, see below)
 sudo cp reflector/reflector.conf /etc/xdg/reflector/
 sudo systemctl enable --now NetworkManager bluetooth sddm power-profiles-daemon fstrim.timer paccache.timer reflector.timer
-systemctl --user enable --now wireplumber hyprpolkitagent hypridle
+systemctl --user enable --now wireplumber hyprpolkitagent
 
 # 5. make zsh the login shell
 chsh -s /bin/zsh
@@ -172,6 +172,5 @@ Deliberately not set up yet, listed so they don't get rediscovered as bugs:
 - **No notification daemon.** `libnotify` is installed but nothing owns
   `org.freedesktop.Notifications`, so `notify-send` hangs and no app can notify.
   Fix by installing `mako` or `swaync` and autostarting it in `hyprland.lua`.
-- **No lock screen, no suspend-on-idle** — deliberate: idle only dims and
-  turns the screen off (`hypr/.config/hypr/hypridle.conf`), so waking never
-  asks for a password. Lid close does nothing special.
+- **No lock screen or idle handling** (`hyprlock` / `hypridle`) — the laptop
+  never locks on lid close or idle, and never suspends on idle.
