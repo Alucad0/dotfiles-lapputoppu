@@ -375,8 +375,11 @@ hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
 hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("~/.config/hypr/scripts/mute-toggle.sh"),          { locked = true, repeating = true })
 hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
--- plain F4 too: the waybar mic icon shows the slash while muted
-hl.bind("F4",                    hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true })
+-- The bare mic key: Acer's firmware maps it to F15, not F4 (Fn+F4 sends a
+-- plain F4, which is left unbound). Bound by keycode because xkb doesn't
+-- resolve the F15 keysym here — 193 = evdev KEY_F15 (185) + 8. The waybar
+-- mic icon shows the slash while muted.
+hl.bind("code:193",              hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true })
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh up"),        { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightness.sh down"),      { locked = true, repeating = true })
 
