@@ -27,6 +27,12 @@ dark themes that differ only in undertone — see [Themes](#themes).
 
 ![waybar](preview_waybar.png)
 
+## Keymap
+
+Every shortcut, waybar click and command in one page ([live, filterable version](https://claude.ai/artifact/2vyJ18nWZM5Vvf9vGbY5Dv)):
+
+![keymap cheat sheet](preview_keymap.png)
+
 ## Layout
 
 Every top-level directory is a "package" mirroring its layout relative to `$HOME`
