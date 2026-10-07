@@ -389,9 +389,11 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/.config/hypr/scripts/brightn
 -- "unblock set for all" within the same press). The waybar wifi module
 -- polls rfkill and flips to "airplane mode"; right-clicking it runs
 -- airplane-mode.sh, the software toggle that also covers bluetooth.
--- The display key (F7) pops the same mirror/extend menu as the waybar
--- screenshare icon (a "no display connected" notice without a cable).
-hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh menu"))
+-- The display key (F7) cycles mirror / extend right / external off,
+-- Win+P style, in a self-closing OSD (a "no display connected" notice
+-- without a cable). The waybar screenshare icon keeps the full menu
+-- with all the extend directions.
+hl.bind("XF86Display", hl.dsp.exec_cmd("~/.config/waybar/scripts/screenshare.sh cycle"))
 
 -- Requires playerctl
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = true })
