@@ -133,9 +133,15 @@ if [[ " ${PACKAGES[*]} " == *" gtk "* ]]; then
         echo "downloading GTK theme: $GTK_THEME_NAME"
         run mkdir -p "$HOME/.themes"
         if (( DRY_RUN )); then
-            echo "would: curl -sL $GTK_THEME_URL | bsdtar -xf - -C $HOME/.themes"
+            echo "would: curl -sL $GTK_THEME_URL -o <tmp>.zip && bsdtar -xf <tmp>.zip -C $HOME/.themes"
         else
-            curl -sL --fail "$GTK_THEME_URL" | bsdtar -xf - -C "$HOME/.themes"
+            # download to a file first: bsdtar reading the pipe can't seek, and a
+            # mid-stream failure would leave a half-extracted theme behind
+            GTK_TMP="$(mktemp --suffix=.zip)"
+            trap 'rm -f "$GTK_TMP"' EXIT
+            curl -sL --fail "$GTK_THEME_URL" -o "$GTK_TMP"
+            bsdtar -xf "$GTK_TMP" -C "$HOME/.themes"
+            rm -f "$GTK_TMP"
         fi
     fi
     # libadwaita (GTK4) apps ignore gtk-theme-name and read css straight from ~/.config/gtk-4.0

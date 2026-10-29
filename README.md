@@ -99,7 +99,7 @@ it into the repo.
 grep -vE '^\s*(#|$)' packages.txt | sudo pacman -S --needed -
 
 # 2. AUR packages — bootstrap yay first if it isn't there:
-#    git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+#    git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 grep -vE '^\s*(#|$)' packages-aur.txt | yay -S --needed -
 
 # 3. dotfiles
