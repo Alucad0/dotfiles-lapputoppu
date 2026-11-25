@@ -15,15 +15,17 @@ set -uo pipefail
 INTERNAL="eDP-1"
 EXT_WORKSPACE=10     # workspace pinned to the external screen in extend mode
 
-# The panel is 16:10 but externals are usually 16:9; mirroring across that
-# mismatch pillarboxes the external and hyprland flickers in the bar areas.
-# So while mirroring, drop the panel to its native 16:9 mode instead.
-MIRROR_MODE="1920x1080@90"
-MIRROR_INT_SCALE="1.2"   # 1600x900 logical, close to the usual 1440x900
 MIRROR_MARKER="${XDG_RUNTIME_DIR:-/tmp}/waybar-screenshare-mirror"
 
+# Restore the panel keeping whatever scale it currently runs at — nothing in
+# this script changes the internal scale, and the per-panel scale rules live
+# in hyprland.lua, so this works unchanged on any machine.
 restore_internal() {
-    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = 'preferred', position = '0x0', scale = 2 })"
+    local scale
+    scale="$(hyprctl monitors | awk -v mon="$INTERNAL" '
+        $1 == "Monitor" { cur = $2 }
+        cur == mon && $1 == "scale:" { print $2; exit }')"
+    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = 'preferred', position = '0x0', scale = ${scale:-1} })"
     rm -f "$MIRROR_MARKER"
 }
 
@@ -46,19 +48,31 @@ external() {
 }
 
 apply_mirror() {
-    # Same aspect on both screens -> no pillarbox, no side flicker
-    hyprctl eval "hl.monitor({ output = '$INTERNAL', mode = '$MIRROR_MODE', position = '0x0', scale = $MIRROR_INT_SCALE })"
-    hyprctl eval "hl.monitor({ output = '$1', mode = 'preferred', position = 'auto', scale = 1, mirror = '$INTERNAL' })"
+    # disabled = false is required: without it the rule registers but the
+    # output never lights up (stays Off at the DRM level)
+    hyprctl eval "hl.monitor({ output = '$1', mode = 'preferred', position = 'auto', scale = 1, mirror = '$INTERNAL', disabled = false })"
     touch "$MIRROR_MARKER"
 }
 
 # Extend: place the external screen and park a dedicated workspace on it,
 # so sharing that display always shows the same workspace
-apply_extend() { # $1 = external output, $2 = auto-right/-left/-up/-down
+apply_extend() { # $1 = external output, $2 = auto-right/-left/-up/-down, $3 = workspace (default $EXT_WORKSPACE)
+    local ws="${3:-$EXT_WORKSPACE}"
     restore_internal
-    hyprctl eval "hl.monitor({ output = '$1', mode = 'preferred', position = '$2', scale = 1 })"
-    hyprctl eval "hl.workspace_rule({ workspace = '$EXT_WORKSPACE', monitor = '$1', default = true })"
-    hyprctl dispatch "hl.dsp.workspace.move({ workspace = $EXT_WORKSPACE, monitor = '$1' })"
+    hyprctl eval "hl.monitor({ output = '$1', mode = 'preferred', position = '$2', scale = 1, disabled = false })"
+    hyprctl eval "hl.workspace_rule({ workspace = '$ws', monitor = '$1', default = true })"
+    hyprctl dispatch "hl.dsp.workspace.move({ workspace = $ws, monitor = '$1' })"
+}
+
+# One line per existing workspace: "<id> — <n> win — <last window title>"
+list_workspaces() {
+    hyprctl workspaces | awk '
+        /^workspace / { id = $2 }
+        /^\twindows:/ { w = $2 }
+        /^\tlastwindowtitle:/ {
+            sub(/^\tlastwindowtitle: /, "")
+            printf "%s — %s win — %.45s\n", id, w, $0
+        }' | sort -n
 }
 
 apply_off() {
@@ -101,8 +115,9 @@ if [ "${1:-status}" = "menu" ]; then
         "󰞓  Extend left" \
         "󰞕  Extend above" \
         "󰞒  Extend below" \
+        "󱂬  Send workspace to external" \
         "󰶐  External off" \
-        | wofi --dmenu --prompt "Screen sharing: $ext" --lines 7)" || exit 0
+        | wofi --dmenu --prompt "Screen sharing: $ext" --lines 8)" || exit 0
 
     case "$choice" in
         *Mirror*)  apply_mirror "$ext" ;;
@@ -110,6 +125,14 @@ if [ "${1:-status}" = "menu" ]; then
         *left*)    apply_extend "$ext" auto-left ;;
         *above*)   apply_extend "$ext" auto-up ;;
         *below*)   apply_extend "$ext" auto-down ;;
+        *workspace*)
+            # Second picker: existing workspaces, or type any number
+            pick="$(list_workspaces | wofi --dmenu --prompt "Workspace → $ext" \
+                --lines 10 --cache-file /dev/null)" || exit 0
+            ws="${pick%% *}"
+            case "$ws" in (*[!0-9]*|'') exit 0 ;; esac
+            apply_extend "$ext" auto-right "$ws"
+            ;;
         *off*)     apply_off "$ext" ;;
         *) exit 0 ;;
     esac
@@ -163,7 +186,7 @@ fi
 
 # status mode
 if ! ext="$(external)"; then
-    # Cable pulled while mirroring: put the panel back to 2880x1800@2
+    # Cable pulled while mirroring: clear the marker and panel overrides
     [ -e "$MIRROR_MARKER" ] && restore_internal >/dev/null
     exit 0
 fi

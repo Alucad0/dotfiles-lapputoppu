@@ -197,9 +197,9 @@
     },
     "battery": {
         "states": {
-            "warning": 30,
-            "critical": 20,
-            "danger": 10
+            "warning": 35,
+            "critical": 25,
+            "danger": 15
         },
         "format": "<span size='12000' rise='-2000'>{icon}</span> {capacity}%",
         "format-charging": "<span size='12000' rise='-2000'></span> {capacity}%",

@@ -6,5 +6,9 @@
     "padding": 0,
     "refreshInterval": 10
   },
-  "theme": "dark"
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "theme": "dark",
+  "switchModelsOnFlag": false
 }

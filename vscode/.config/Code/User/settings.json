@@ -1,4 +1,5 @@
 {
+    "window.zoomLevel": 0.5,
     "github.copilot.nextEditSuggestions.enabled": true,
     "explorer.confirmDelete": false,
     "workbench.colorTheme": "Monokai Vibrant",
@@ -11,5 +12,7 @@
     "explorer.confirmDragAndDrop": false,
     "workbench.secondarySideBar.defaultVisibility": "visible",
     "chat.viewSessions.orientation": "stacked",
-    "diffEditor.ignoreTrimWhitespace": false
+    "diffEditor.ignoreTrimWhitespace": false,
+    "redhat.telemetry.enabled": false,
+    "editor.unicodeHighlight.nonBasicASCII": false
 }

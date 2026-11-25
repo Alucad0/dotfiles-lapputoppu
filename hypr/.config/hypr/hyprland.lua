@@ -15,11 +15,21 @@
 ------------------
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+-- Catch-all: let Hyprland pick a sane scale for whatever panel a machine has.
 hl.monitor({
     output   = "",
     mode     = "preferred",
     position = "auto",
     scale    = "auto",
+})
+
+-- This laptop's 1080p panel: "auto" resolves to 1.5 here, which is far too
+-- zoomed in. Matched by description so the rule is inert on other machines.
+hl.monitor({
+    output   = "desc:Chimei Innolux Corporation 0x14D4",
+    mode     = "preferred",
+    position = "auto",
+    scale    = 1.0,
 })
 
 
